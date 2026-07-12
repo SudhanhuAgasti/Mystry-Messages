@@ -25,7 +25,6 @@ export interface User extends Document{
    isVerified:boolean,
    isAcceptingMessage:boolean;
    message:Message[];
-   createdAt:Date
 }
 const UserSchema:Schema<User>=new Schema({
     username:{
