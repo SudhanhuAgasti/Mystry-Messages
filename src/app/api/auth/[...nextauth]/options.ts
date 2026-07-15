@@ -29,7 +29,7 @@ export const authOptions:NextAuthOptions={
                         throw new Error('Please verify your account before login !')
                     }
                     await bcrypt.compare(credentials.Password,user.password)
-                    if(isPasswordCorrect){
+                    if(ispassWordCorrect){
                         return user
                     }else{
                         throw new Error('Please Write correct password !')
@@ -39,5 +39,20 @@ export const authOptions:NextAuthOptions={
                 }
             }
         })
-    ]
+    ],
+    callbacks:{
+        async session({session,token}){
+            return session
+        },
+        async jwt({token,user}){
+            return token
+        },
+    },
+    pages:{
+        signIn:'/sign-in'
+    },
+    session:{
+        strategy:"jwt"
+    },
+    secret:process.env.NEXTAUTH_SECRET,
 }
