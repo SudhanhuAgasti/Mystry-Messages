@@ -43,7 +43,7 @@ const UserSchema:Schema<User>=new Schema({
     password:{
         type:String,
         required:true,
-        length:[6,"Password must bi 6 char. atleast !"]
+        length:[6,"Password must be 6 char. atleast !"]
     },
     verifyCode:{
         type:String,
