@@ -41,6 +41,12 @@ export async function GET(request:Request) {
 
                 },{status:200})
     } catch (error) {
-        
+        console.log("An unaccepted error ")
+         return Response.json(
+                {
+                    success: false,
+                    message: "not authenticated !"
+                }, { status: 500 }
+            )
     }
 }
