@@ -26,7 +26,7 @@ const page = () => {
 
 
   const debouncedUsername = useDebounceValue(username, 300)
-  // const {toast}= useToast();
+
   const router = useRouter();
 
   // ZOD  implemention 
@@ -63,11 +63,36 @@ const page = () => {
   },
     [debouncedUsername])
 
+  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+    setIsSubmitting(true)
+    try {
+      const response = await axios.post<ApiResponse>('/api/sign-up', data)
+      toast.success(response.data.message);
+      router.replace(`/verify/${username}`)
+      setIsSubmitting(false)
+
+    } catch (error) {
+      console.error("Error is signup of user ", error)
+      const axiosError = error as AxiosError<ApiResponse>;
+      let errorMessage = axiosError.response?.data.message
+      toast.success(errorMessage);
+      setIsSubmitting(false);
+
+    }
+  }
+
 
 
   return (
-    <div>
-
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
+            JOIN MYSTRY MESSAAGE
+          </h1>
+          <p className="mb-4">Signup to Start Your Anonymous Adventure</p>
+        </div>
+      </div>
     </div>
   )
 }
