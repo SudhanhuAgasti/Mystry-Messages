@@ -37,7 +37,7 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       toast({
         title: response.data.message,
       });
-      onMessageDelete(message._id);
+      onMessageDelete(message._id.toString());
 
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -45,7 +45,6 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
         title: 'Error',
         description:
           axiosError.response?.data.message ?? 'Failed to delete message',
-        variant: 'destructive',
       });
     } 
   };
