@@ -24,9 +24,12 @@ function UserDashboard() {
   const { toast } = useToast();
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((message) => message._id !== messageId));
+    setMessages((prevMessages) =>
+      prevMessages.filter(
+        (message) => message._id.toString() !== messageId
+      )
+    );
   };
-
   const { data: session } = useSession();
 
   const form = useForm({
@@ -40,7 +43,10 @@ function UserDashboard() {
     setIsSwitchLoading(true);
     try {
       const response = await axios.get<ApiResponse>('/api/accept-messages');
-      setValue('acceptMessages', response.data.isAcceptingMessages);
+      setValue(
+        'acceptMessages',
+        response.data.isAcceptingMessages ?? false
+      );
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
@@ -181,9 +187,10 @@ function UserDashboard() {
         {messages.length > 0 ? (
           messages.map((message, index) => (
             <MessageCard
-              key={message._id}
+              key={message._id.toString()}
               message={message}
               onMessageDelete={handleDeleteMessage}
+
             />
           ))
         ) : (
