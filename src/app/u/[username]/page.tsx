@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CardHeader, CardContent, Card } from '@/components/ui/card';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import {
   Form,
   FormControl,
@@ -68,19 +68,13 @@ export default function SendMessage() {
         username,
       });
 
-      toast({
-        title: response.data.message,
-        variant: 'default',
-      });
+      toast.success(response.data.message);
       form.reset({ ...form.getValues(), content: '' });
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast({
-        title: 'Error',
-        description:
-          axiosError.response?.data.message ?? 'Failed to sent message',
-        variant: 'destructive',
-      });
+     toast.error(
+  axiosError.response?.data.message ?? 'Failed to send message'
+);
     } finally {
       setIsLoading(false);
     }
