@@ -48,12 +48,12 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordCorrect) {
-             return user;
+            return user;
           }
-          else{
+          else {
             throw new Error("incorrect password !")
           }
-         
+
         } catch (error: any) {
           throw new Error(error.message);
         }
