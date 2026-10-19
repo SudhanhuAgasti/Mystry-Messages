@@ -40,7 +40,7 @@ export async function POST(request: Request) {
                 const hasedPassword = await bcrypt.hash(password, 10)
                 existingUserVerifiedByEmail.password = hasedPassword;
                 existingUserVerifiedByEmail.verifyCode = verifyCode;
-                existingUserVerifiedByEmail.verifyCodeExpire = new Date(Date.now() + 360000)
+                existingUserVerifiedByEmail.verifyCodeExpire = new Date(Date.now() + 3600000)
                 await existingUserVerifiedByEmail.save()
             }
 
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
             await newUser.save()
         }
 
-        //  Send Verification eamail
+        //  Send Verification email
         const emailResponse = await sendVerificationEmail(
             email,
             username,
@@ -74,13 +74,13 @@ export async function POST(request: Request) {
         if (!emailResponse.success) {
             return Response.json({
                 success: false,
-                message: "Username is already taken"
+                message: emailResponse.message || "Failed to send verification email"
             }, { status: 500 })
         }
         return Response.json({
             success: true,
-            message: "User regisetred successfully, Please verify your email"
-        }, { status: 202 })
+            message: "User registered successfully, Please verify your email"
+        }, { status: 201 })
 
     } catch (error) {
         console.error("Error registering user", error);

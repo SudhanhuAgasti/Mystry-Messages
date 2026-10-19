@@ -19,34 +19,49 @@ export async function GET(request:Request) {
     }
     const userId = new mongoose.Types.ObjectId(user._id);
     try {
-        // AGGRIGATION PIPELINE USING IN THIS 
-        const user=await UserModel.aggregate([
-            {$match:{id:userId}},
-            {$unwind:'$messages'},
-            {$sort:{'messages.createdAt':-1}},
-            {$group:{_id:'$_id',messages:{$push:'$messages'}}}
-        ])
-        if(!user || user.length===0){
+        const foundUser = await UserModel.findById(userId);
+        if (!foundUser) {
             return Response.json(
                 {
-                    success:false,
-                    message:"User not found "
-                },{status:401}
-            )
-        }
-        return Response.json(
-                {
-                    success:true,
-                    messages:user[0].messages
-
-                },{status:200})
-    } catch (error) {
-        console.log("An unaccepted error ")
-         return Response.json(
-                {
                     success: false,
-                    message: "not authenticated !"
-                }, { status: 500 }
-            )
+                    message: "User not found"
+                },
+                { status: 404 }
+            );
+        }
+
+        if (!foundUser.message || foundUser.message.length === 0) {
+            return Response.json(
+                {
+                    success: true,
+                    messages: []
+                },
+                { status: 200 }
+            );
+        }
+
+        const userWithMessages = await UserModel.aggregate([
+            { $match: { _id: userId } },
+            { $unwind: '$message' },
+            { $sort: { 'message.createdAt': -1 } },
+            { $group: { _id: '$_id', messages: { $push: '$message' } } }
+        ]);
+
+        return Response.json(
+            {
+                success: true,
+                messages: userWithMessages[0]?.messages || []
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error fetching messages:", error);
+        return Response.json(
+            {
+                success: false,
+                message: "Internal server error"
+            },
+            { status: 500 }
+        );
     }
 }

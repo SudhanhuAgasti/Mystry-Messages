@@ -3,11 +3,18 @@ import { toast } from "sonner";
 export type ToastProps = {
   title?: string;
   description?: string;
+  variant?: "default" | "destructive" | string;
 };
 
 export function useToast() {
   return {
     toast: (props: ToastProps) => {
+      if (props.variant === "destructive") {
+        return toast.error(props.title || "Error", {
+          description: props.description,
+        });
+      }
+
       if (props.title && props.description) {
         return toast(props.title, {
           description: props.description,
