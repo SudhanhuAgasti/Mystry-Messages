@@ -35,10 +35,12 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
+            console.log("NextAuth authorize: No user found with identifier:", credentials.identifier);
             throw new Error("No user found with this email!");
           }
 
           if (!user.isVerified) {
+            console.log("NextAuth authorize: User is not verified:", credentials.identifier);
             throw new Error("Please verify your account before login!");
           }
 
@@ -47,11 +49,12 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
 
-          if (isPasswordCorrect) {
-            return user;
-          } else {
+          if (!isPasswordCorrect) {
+            console.log("NextAuth authorize: Password incorrect for:", credentials.identifier);
             throw new Error("Incorrect password!");
           }
+
+          return user;
 
         } catch (error: any) {
           throw new Error(error.message);

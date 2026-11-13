@@ -123,7 +123,7 @@ export default function SignUpForm() {
       });
 
       // Redirect to Verify Page
-      router.replace(`/verify/${username}`);
+      router.replace(`/verify/${data.username}`);
 
       setIsSubmitting(false);
 

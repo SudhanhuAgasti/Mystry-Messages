@@ -23,64 +23,61 @@ export async function POST(request: Request) {
             }, { status: 400 })
 
         }
-        const existingUserVerifiedByEmail = await UserModel.findOne({
-            email,
-            isVerified: true
-        })
+        const existingUserByEmail = await UserModel.findOne({ email });
         const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        if (existingUserVerifiedByEmail) {
-            if (existingUserVerifiedByEmail.isVerified) {
+        if (existingUserByEmail) {
+            if (existingUserByEmail.isVerified) {
                 return Response.json({
                     success: false,
-                    message: "User already exist wih this email"
-                }, { status: 400 })
-
+                    message: "User already exists with this email"
+                }, { status: 400 });
             } else {
-                const hasedPassword = await bcrypt.hash(password, 10)
-                existingUserVerifiedByEmail.password = hasedPassword;
-                existingUserVerifiedByEmail.verifyCode = verifyCode;
-                existingUserVerifiedByEmail.verifyCodeExpire = new Date(Date.now() + 3600000)
-                await existingUserVerifiedByEmail.save()
+                const hashedPassword = await bcrypt.hash(password, 10);
+                existingUserByEmail.username = username;
+                existingUserByEmail.password = hashedPassword;
+                existingUserByEmail.verifyCode = verifyCode;
+                existingUserByEmail.verifyCodeExpire = new Date(Date.now() + 3600000);
+                await existingUserByEmail.save();
             }
-
-
         } else {
-            const hasedPassword = await bcrypt.hash(password, 10)
-            const expiryDate = new Date()
-            expiryDate.setHours(expiryDate.getHours() + 1)
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const expiryDate = new Date();
+            expiryDate.setHours(expiryDate.getHours() + 1);
 
             const newUser = new UserModel({
                 username,
                 email,
-                password: hasedPassword,
+                password: hashedPassword,
                 verifyCode,
                 verifyCodeExpire: expiryDate,
                 isVerified: false,
                 isAcceptingMessage: true,
                 message: [],
-            })
-            await newUser.save()
+            });
+            await newUser.save();
         }
+
+        // Print OTP to terminal for local development & testing
+        console.log(`\n========================================`);
+        console.log(`🔑 VERIFICATION CODE FOR [${username}] (${email}): ${verifyCode}`);
+        console.log(`========================================\n`);
 
         //  Send Verification email
         const emailResponse = await sendVerificationEmail(
             email,
             username,
             verifyCode
-        )
-
+        );
 
         if (!emailResponse.success) {
-            return Response.json({
-                success: false,
-                message: emailResponse.message || "Failed to send verification email"
-            }, { status: 500 })
+            console.warn("⚠️ Warning: Email sending failed, but OTP was printed to terminal above.");
         }
+
         return Response.json({
             success: true,
             message: "User registered successfully, Please verify your email"
-        }, { status: 201 })
+        }, { status: 201 });
 
     } catch (error) {
         console.error("Error registering user", error);
