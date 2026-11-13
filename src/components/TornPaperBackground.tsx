@@ -4,16 +4,16 @@ import React from 'react';
 
 /**
  * TornPaperBackground
- * - Completely STATIC (no animation/movement, as requested)
- * - Deep matte black background (#0b0b0e) in center
- * - Right side: Golden textured torn paper layers with rough deckle edges
- * - Left side (Desktop mode only): Matching golden textured torn paper layer
- * - SVG turbulent noise filter for authentic paper texture & fiber edges
+ * - Fixed Fullscreen Canvas (`fixed inset-0`) that covers the entire page during scroll
+ * - Responsive: Works beautifully on mobile, tablet, and widescreen desktop
+ * - Double-sided torn paper on desktop, streamlined edge on mobile
+ * - Anti-zoom / touch-manipulation protected
+ * - Lightweight SVG filters for deckle paper texture and deep realistic drop shadows
  */
 export default function TornPaperBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 bg-[#0c0c0e]">
-      {/* SVG Filters for Deckle Edges & Paper Grain */}
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden pointer-events-none select-none z-0 bg-[#0c0c0e]">
+      {/* SVG Filters for Deckle Edges & Authentic Paper Grain */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="paper-grain" x="0%" y="0%" width="100%" height="100%">
@@ -66,12 +66,12 @@ export default function TornPaperBackground() {
         </defs>
       </svg>
 
-      {/* Deep Matte Black Base */}
+      {/* Deep Matte Black Base with soft vignette */}
       <div className="absolute inset-0 bg-gradient-to-tr from-[#060608] via-[#0b0b0e] to-[#111116]" />
 
-      {/* ===================== LEFT SIDE TORN PAPER (DESKTOP MODE ONLY) ===================== */}
+      {/* ===================== LEFT SIDE TORN PAPER (DESKTOP) ===================== */}
       <div
-        className="hidden md:block absolute top-0 bottom-0 left-0 w-[24vw] lg:w-[20vw] h-full"
+        className="hidden md:block absolute top-0 bottom-0 left-0 w-[22vw] lg:w-[18vw] h-full"
         style={{
           filter: 'url(#torn-edge-side) drop-shadow(18px 0px 30px rgba(0,0,0,0.9))',
         }}
@@ -94,12 +94,10 @@ export default function TornPaperBackground() {
             clipPath: 'polygon(0% 0%, 82% 0%, 60% 40%, 74% 70%, 52% 100%, 0% 100%)',
           }}
         >
-          {/* Micro-texture grain */}
           <div
             className="absolute inset-0 opacity-40 mix-blend-multiply"
             style={{ filter: 'url(#paper-grain)' }}
           />
-          {/* Edge shadow & highlight */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/35" />
           <div
             className="absolute inset-0 border-r-[2.5px] border-[#fae29c]/60 pointer-events-none"
@@ -110,11 +108,11 @@ export default function TornPaperBackground() {
         </div>
       </div>
 
-      {/* ===================== RIGHT SIDE TORN PAPER (MATCHING REFERENCE) ===================== */}
+      {/* ===================== RIGHT SIDE TORN PAPER ===================== */}
 
       {/* Inner Exposed Smooth Golden Layer in lower-right */}
       <div
-        className="absolute bottom-0 right-0 w-[55vw] md:w-[32vw] lg:w-[28vw] h-[85vh]"
+        className="absolute bottom-0 right-0 w-[45vw] md:w-[32vw] lg:w-[26vw] h-[85vh]"
         style={{
           clipPath: 'polygon(100% 0%, 100% 100%, 25% 100%, 70% 35%)',
           background: 'linear-gradient(135deg, #e5a720 0%, #d89614 35%, #b97d09 70%, #6e4802 100%)',
@@ -124,7 +122,7 @@ export default function TornPaperBackground() {
 
       {/* Lower Right Torn Paper */}
       <div
-        className="absolute bottom-0 right-0 w-[60vw] md:w-[38vw] lg:w-[32vw] h-[95vh]"
+        className="absolute bottom-0 right-0 w-[50vw] md:w-[38vw] lg:w-[30vw] h-[95vh]"
         style={{
           filter: 'url(#torn-edge-side) drop-shadow(-18px -10px 30px rgba(0,0,0,0.85))',
         }}
@@ -152,7 +150,7 @@ export default function TornPaperBackground() {
 
       {/* Top-Diagonal Heavy Torn Sheet */}
       <div
-        className="absolute -top-10 right-0 w-[95vw] sm:w-[80vw] md:w-[50vw] lg:w-[42vw] h-[60vh]"
+        className="absolute -top-10 right-0 w-[85vw] sm:w-[75vw] md:w-[48vw] lg:w-[40vw] h-[60vh]"
         style={{
           filter: 'url(#torn-edge-top) drop-shadow(-20px 25px 35px rgba(0,0,0,0.92))',
         }}
@@ -172,7 +170,7 @@ export default function TornPaperBackground() {
         </div>
       </div>
 
-      {/* Center Subtle Atmosphere Lighting */}
+      {/* Center Atmospheric Glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-[140px] pointer-events-none" />
     </div>
   );

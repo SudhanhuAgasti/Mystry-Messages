@@ -15,6 +15,7 @@ import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
+import TornPaperBackground from '@/components/TornPaperBackground';
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -120,8 +121,8 @@ function UserDashboard() {
 
   if (!session || !session.user) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[70vh] text-black">
-        <Loader2 className="w-8 h-8 animate-spin text-black" />
+      <div className="flex-1 flex items-center justify-center min-h-[70vh] text-amber-400">
+        <Loader2 className="w-8 h-8 animate-spin text-amber-400" />
       </div>
     );
   }
@@ -141,37 +142,40 @@ function UserDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#facc15] via-[#eab308] to-[#ca8a04] text-black py-10 px-4 sm:px-6 lg:px-8 selection:bg-black selection:text-yellow-300">
-      <div className="max-w-5xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#0b0b0e] text-neutral-100 pt-24 pb-10 px-4 sm:px-6 lg:px-8 relative selection:bg-amber-400 selection:text-black">
+      {/* Torn Paper Realistic Background */}
+      <TornPaperBackground />
+
+      <div className="max-w-5xl mx-auto space-y-8 relative z-10">
         
         {/* Title & Top Greeting */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b-2 border-black/20">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-amber-500/20">
           <div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-black font-serif">
+            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white font-serif drop-shadow-md">
               User Dashboard
             </h1>
-            <p className="text-sm text-neutral-900 font-medium mt-1">
+            <p className="text-sm text-neutral-300 font-medium mt-1">
               Manage your anonymous feedback and personal link.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto bg-black text-yellow-300 px-4 py-2.5 rounded-2xl shadow-lg border border-black">
-            <span className="text-xs uppercase tracking-wider font-extrabold text-neutral-300">Status:</span>
+          <div className="flex items-center gap-3 self-start md:self-auto bg-[#141419]/90 backdrop-blur-md text-amber-300 px-4 py-2.5 rounded-2xl shadow-xl border border-amber-500/30">
+            <span className="text-xs uppercase tracking-wider font-extrabold text-neutral-400">Status:</span>
             <Switch
               {...register('acceptMessages')}
               checked={!!acceptMessages}
               onCheckedChange={handleSwitchChange}
               disabled={isSwitchLoading}
             />
-            <span className={`text-xs font-black ${acceptMessages ? 'text-yellow-400' : 'text-neutral-500'}`}>
+            <span className={`text-xs font-black ${acceptMessages ? 'text-amber-400' : 'text-neutral-500'}`}>
               {acceptMessages ? 'ACCEPTING' : 'MUTED'}
             </span>
           </div>
         </div>
 
         {/* Share Link Card */}
-        <div className="rounded-2xl bg-black text-white p-6 md:p-8 shadow-2xl space-y-3 border border-black">
-          <div className="flex items-center gap-2 text-sm font-bold text-yellow-400">
+        <div className="rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white p-6 md:p-8 shadow-2xl space-y-3 border border-amber-500/30">
+          <div className="flex items-center gap-2 text-sm font-bold text-amber-400">
             <LinkIcon className="w-4 h-4" />
             <span>Your Anonymous Link</span>
           </div>
@@ -180,12 +184,12 @@ function UserDashboard() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-            <div className="flex-1 bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-yellow-300 font-mono select-all overflow-hidden text-ellipsis">
+            <div className="flex-1 bg-black/80 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-amber-300 font-mono select-all overflow-hidden text-ellipsis">
               {profileUrl}
             </div>
             <Button
               onClick={copyToClipboard}
-              className="bg-yellow-400 hover:bg-yellow-300 text-black font-black shadow-lg px-7 py-3 rounded-xl border-0 transition"
+              className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-black shadow-lg px-7 py-3 rounded-xl border-0 transition"
             >
               {copied ? (
                 <>
@@ -204,8 +208,8 @@ function UserDashboard() {
 
         {/* Messages Section Header */}
         <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2 text-xl font-black text-black">
-            <Inbox className="w-5 h-5 text-black" />
+          <div className="flex items-center gap-2 text-xl font-black text-white">
+            <Inbox className="w-5 h-5 text-amber-400" />
             <span>Received Messages ({messages.length})</span>
           </div>
 
@@ -215,13 +219,13 @@ function UserDashboard() {
               e.preventDefault();
               fetchMessages(true);
             }}
-            className="bg-black hover:bg-neutral-800 text-yellow-400 font-bold text-xs rounded-xl px-4 py-2 shadow-md border-0"
+            className="bg-[#141419]/90 hover:bg-black text-amber-400 border border-amber-500/30 font-bold text-xs rounded-xl px-4 py-2 shadow-md transition"
           >
             {isLoading ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-yellow-400" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-400" />
             ) : (
               <>
-                <RefreshCcw className="h-3.5 w-3.5 mr-1.5 text-yellow-400" />
+                <RefreshCcw className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
                 Refresh
               </>
             )}
@@ -239,11 +243,11 @@ function UserDashboard() {
               />
             ))
           ) : (
-            <div className="col-span-full py-16 px-4 rounded-2xl bg-black/90 text-white border border-black text-center space-y-3 shadow-xl">
-              <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-yellow-400">
+            <div className="col-span-full py-16 px-4 rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-3 shadow-xl">
+              <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-amber-400">
                 <Inbox className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-yellow-400">No messages yet</h3>
+              <h3 className="text-base font-bold text-amber-400">No messages yet</h3>
               <p className="text-xs text-neutral-300 max-w-sm mx-auto">
                 Share your unique link with friends to start getting secret feedback and confessions.
               </p>

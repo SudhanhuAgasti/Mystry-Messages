@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <defs>
+    <filter id="bubble-shadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#f59e0b" flood-opacity="0.35"/>
+    </filter>
+    <radialGradient id="bubble-grad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff176"/>
+      <stop offset="25%" stop-color="#facc15"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </radialGradient>
+    <linearGradient id="highlight-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="dot-grad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#f4f4f5"/>
+      <stop offset="100%" stop-color="#d4d4d8"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Speech Bubble Shape (100% transparent background, crisp smooth vector) -->
+  <g filter="url(#bubble-shadow)">
+    <path d="M80 18 C118 18 146 44 146 76 C146 108 118 134 80 134 C68 134 57 131 47 126 C33 137 20 142 16 142 C14 142 13 140 14 138 C17 127 19 116 19 110 C15 100 14 88 14 76 C14 44 42 18 80 18 Z" fill="url(#bubble-grad)"/>
+  </g>
+
+  <!-- Top Glossy 3D Highlight Reflection -->
+  <path d="M40 42 C52 28 66 23 80 23 C94 23 108 28 120 42 C108 32 94 28 80 28 C66 28 52 32 40 42 Z" fill="url(#highlight-grad)"/>
+
+  <!-- Three 3D White Dots -->
+  <circle cx="56" cy="76" r="9" fill="url(#dot-grad)"/>
+  <circle cx="80" cy="76" r="9" fill="url(#dot-grad)"/>
+  <circle cx="104" cy="76" r="9" fill="url(#dot-grad)"/>
+</svg>
+

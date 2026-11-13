@@ -26,14 +26,12 @@ const sampleMessages = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0b0b0e] text-neutral-100 font-sans selection:bg-amber-400 selection:text-black relative">
-      {/* Exact Torn Paper Animated Background */}
+    <div className="min-h-screen flex flex-col bg-[#0b0b0e] text-neutral-100 font-sans selection:bg-amber-400 selection:text-black relative pt-16">
+      {/* Exact Torn Paper Background */}
       <TornPaperBackground />
 
-      {/* Navbar on top */}
-      <div className="relative z-20">
-        <Navbar />
-      </div>
+      {/* Constant Fixed Navbar */}
+      <Navbar />
 
       {/* Hero Section */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 md:px-12 py-16 text-center relative z-10">
@@ -48,8 +46,8 @@ export default function Home() {
           {/* Heading with 1-by-1 Drop-in Animation and Distinctive Typography */}
           <div className="py-2">
             <h1 className="text-5xl sm:text-7xl md:text-8xl tracking-tight leading-none text-white drop-shadow-2xl">
-              {/* Line 1: Unfiltered Truth */}
-              <div className="font-serif italic font-black flex items-center justify-center gap-4 flex-wrap">
+              {/* Line 1: Unfiltered [Bubble] Truth */}
+              <div className="font-serif italic font-black flex items-center justify-center gap-3 sm:gap-4 md:gap-5 flex-wrap">
                 <span className="text-amber-400 relative inline-flex items-baseline">
                   {/* White 'U' with Royal Crown tilted on top */}
                   <span className="relative inline-block text-white mr-0.5">
@@ -58,6 +56,16 @@ export default function Home() {
                   </span>
                   <span>nfiltered</span>
                 </span>
+
+                {/* 3D Yellow Message Bubble in the middle (pure transparent vector) */}
+                <span className="inline-flex items-center justify-center mx-1 align-middle">
+                  <img
+                    src="/yellow-chat-bubble.svg"
+                    alt="Chat Bubble"
+                    className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.5)] transform -rotate-6 hover:rotate-6 hover:scale-110 transition-all duration-300"
+                  />
+                </span>
+
                 <span className="text-neutral-100">
                   Truth !!
                 </span>
