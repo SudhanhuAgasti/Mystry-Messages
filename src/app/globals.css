@@ -127,3 +127,77 @@
     @apply font-sans;
     }
 }
+
+@keyframes dropWord {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.85);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(8px) scale(1.05);
+  }
+  80% {
+    transform: translateY(-3px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-drop-word {
+  display: inline-block;
+  opacity: 0;
+  animation: dropWord 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Organic Slow Breeze Movement for Torn Paper Layers */
+@keyframes paperSwayTop {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) skew(0deg, 0deg);
+  }
+  33% {
+    transform: translate3d(-6px, 4px, 0) rotate(-0.4deg) skew(-0.3deg, 0.2deg);
+  }
+  66% {
+    transform: translate3d(4px, -3px, 0) rotate(0.3deg) skew(0.2deg, -0.1deg);
+  }
+}
+
+@keyframes paperSwayRight {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  40% {
+    transform: translate3d(5px, -6px, 0) rotate(0.4deg) scale(1.008);
+  }
+  80% {
+    transform: translate3d(-4px, 3px, 0) rotate(-0.3deg) scale(0.998);
+  }
+}
+
+@keyframes paperSubtleGlow {
+  0%, 100% {
+    opacity: 0.95;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(3px, -2px, 0);
+  }
+}
+
+.animate-paper-sway-top {
+  animation: paperSwayTop 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.animate-paper-sway-right {
+  animation: paperSwayRight 17s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.animate-paper-subtle-glow {
+  animation: paperSubtleGlow 12s ease-in-out infinite alternate;
+}

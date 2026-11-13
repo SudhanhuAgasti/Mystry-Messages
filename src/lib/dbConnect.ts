@@ -8,7 +8,6 @@ const connection: ConnectionObject = {}
 
 async function dbConnect(): Promise<void> {
     if (connection.isConnected) {
-        console.log("Already connected to db");
         return;
     }
 
@@ -18,13 +17,11 @@ async function dbConnect(): Promise<void> {
         connection.isConnected = db.connections[0]
             .readyState;
 
-        console.log("DB connected successfully !!")
+        console.log("MongoDB connected successfully !!")
     } catch (error) {
-
-        console.log("db connection is failed !", error)
+        console.error("MongoDB connection failed !", error)
         process.exit(1)
     }
-
 }
 
 export default dbConnect;

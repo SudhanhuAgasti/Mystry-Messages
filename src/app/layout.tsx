@@ -3,10 +3,11 @@ import { Toaster } from "@/components/ui/sonner";
 
 import AuthProvider from "@/context/authprovider";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Outfit, Playfair_Display } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans' });
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 
 export const metadata: Metadata = {
   title: "Mystery Messages",
@@ -19,14 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans", outfit.variable, playfair.variable)}>
       <AuthProvider>
-      <body>
-        {children}
-         <Toaster />
-      </body>
+        <body>
+          {children}
+          <Toaster />
+        </body>
       </AuthProvider>
-
     </html>
   );
 }

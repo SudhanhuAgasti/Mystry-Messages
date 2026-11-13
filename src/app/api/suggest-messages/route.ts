@@ -48,8 +48,12 @@ What's a hobby you've recently started?||If you could have dinner with any histo
     return new Response(result, {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
-  } catch (error) {
-    console.error("Error in suggest-messages API:", error);
+  } catch (error: any) {
+    if (error?.status === 429) {
+      console.warn("⚠️ OpenAI quota exhausted or unavailable. Serving fallback suggestions.");
+    } else {
+      console.error("⚠️ OpenAI error:", error?.message || error);
+    }
 
     // Graceful fallback questions so button always works
     const randomIndex = Math.floor(Math.random() * fallbackQuestionSets.length);

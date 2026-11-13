@@ -17,9 +17,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { signInSchema } from '@/schemas/signInSchema';
+import { Crown, Lock, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 export default function SignInForm() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
@@ -29,72 +33,121 @@ export default function SignInForm() {
         },
     });
 
-
     const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+        setIsLoading(true);
         const result = await signIn('credentials', {
             redirect: false,
             identifier: data.identifier,
             password: data.password,
         });
 
+        setIsLoading(false);
+
         if (result?.error) {
             if (result.error === 'CredentialsSignin') {
                 toast.error("Login Failed", {
-                    description: "Incorrect username or password",
+                    description: "Incorrect username/email or password",
                 });
             } else {
-                toast.error("Error", {
+                toast.error("Login Error", {
                     description: result.error,
                 });
             }
+            return;
         }
 
-        if (result?.url) {
+        if (result?.url || !result?.error) {
+            toast.success("Welcome back!", {
+                description: "Signed in successfully.",
+            });
             router.replace('/dashboard');
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-                <div className="text-center">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-                        Welcome Back to True Feedback
+        <div className="flex justify-center items-center min-h-screen bg-[#070709] px-4 py-12 relative overflow-hidden font-sans">
+            {/* Ambient Gold Glow */}
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-transparent blur-3xl pointer-events-none rounded-full" />
+
+            <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f13] border border-[#2d2512] rounded-2xl shadow-2xl relative z-10">
+                {/* Crown Header */}
+                <div className="text-center space-y-2">
+                    <div className="inline-flex p-2.5 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 shadow-lg shadow-amber-500/20 mb-2">
+                        <Crown className="w-6 h-6 text-black" />
+                    </div>
+                    <h1 className="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500">
+                        Welcome Back
                     </h1>
-                    <p className="mb-4">Sign in to continue your secret conversations</p>
+                    <p className="text-xs text-neutral-400">
+                        Sign in to access your royal feedback dashboard
+                    </p>
                 </div>
+
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             name="identifier"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email/Username</FormLabel>
-                                    <Input {...field} />
-                                    <FormMessage />
+                                    <FormLabel className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+                                        Email / Username
+                                    </FormLabel>
+                                    <div className="relative">
+                                        <Input
+                                            placeholder="Enter your email or username"
+                                            className="bg-[#09090c] border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
+                                            {...field}
+                                        />
+                                    </div>
+                                    <FormMessage className="text-xs text-red-400" />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             name="password"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <Input type="password" {...field} />
-                                    <FormMessage />
+                                    <FormLabel className="text-xs font-semibold uppercase tracking-wider text-amber-400">
+                                        Password
+                                    </FormLabel>
+                                    <Input
+                                        type="password"
+                                        placeholder="••••••••"
+                                        className="bg-[#09090c] border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
+                                        {...field}
+                                    />
+                                    <FormMessage className="text-xs text-red-400" />
                                 </FormItem>
                             )}
                         />
-                        <Button className='w-full' type="submit">Sign In</Button>
+
+                        <Button
+                            className="w-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-black font-bold py-5 rounded-xl shadow-lg shadow-amber-500/10 border-0 mt-2 text-sm transition"
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Signing in...
+                                </>
+                            ) : (
+                                <>
+                                    Sign In <ArrowRight className="w-4 h-4 ml-1.5" />
+                                </>
+                            )}
+                        </Button>
                     </form>
                 </Form>
-                <div className="text-center mt-4">
-                    <p>
-                        Not a member yet?{' '}
-                        <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
-                            Sign up
+
+                <div className="text-center pt-2 border-t border-[#1f1b10]">
+                    <p className="text-xs text-neutral-400">
+                        Don't have an account?{' '}
+                        <Link href="/sign-up" className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-4">
+                            Sign up here
                         </Link>
                     </p>
                 </div>
