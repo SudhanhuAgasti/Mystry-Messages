@@ -21,12 +21,12 @@ export async function POST(request: Request) {
             )
         }
 
-        // is user accepting the messages (treat undefined as true by default)
+        // is user accepting the messages (only block if user explicitly set to false)
         if (user.isAcceptingMessage === false) {
             return Response.json(
                 {
                     success: false,
-                    message: `User "@${username}" is currently not accepting messages.`
+                    message: `User "@${username}" has temporarily turned off message reception in their dashboard.`
                 }, { status: 403 }
             )
         }

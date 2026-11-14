@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="#0b0b0e"/>
+  <!-- Crown Icon -->
+  <path d="M7 23h18l-1.5-10-4.5 5-3-9-3 9-4.5-5L7 23z" fill="url(#gold)"/>
+  <circle cx="7" cy="12" r="1.5" fill="#fef08a"/>
+  <circle cx="16" cy="8" r="1.5" fill="#fef08a"/>
+  <circle cx="25" cy="12" r="1.5" fill="#fef08a"/>
+</svg>
+
