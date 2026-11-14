@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Loader2, Send, Sparkles, Crown, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCompletion } from '@ai-sdk/react';
 import {
   Form,
   FormControl,
@@ -39,15 +38,10 @@ export default function SendMessage() {
   const username = params.username;
   const { toast } = useToast();
 
-  const {
-    complete,
-    completion,
-    isLoading: isSuggestLoading,
-    error,
-  } = useCompletion({
-    api: '/api/suggest-messages',
-    initialCompletion: initialMessageString,
-  });
+  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>(() =>
+    parseStringMessages(initialMessageString)
+  );
+  const [isSuggestLoading, setIsSuggestLoading] = useState(false);
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -81,7 +75,7 @@ export default function SendMessage() {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: 'Error',
-        description: axiosError.response?.data.message ?? 'Failed to send message',
+        description: axiosError.response?.data?.message ?? 'Failed to send message',
         variant: 'destructive',
       });
     } finally {
@@ -90,10 +84,24 @@ export default function SendMessage() {
   };
 
   const fetchSuggestedMessages = async () => {
+    setIsSuggestLoading(true);
     try {
-      complete('');
+      const response = await axios.post('/api/suggest-messages', {});
+      if (response.data && typeof response.data === 'string') {
+        const parsed = parseStringMessages(response.data);
+        if (parsed.length > 0) {
+          setSuggestedQuestions(parsed);
+        }
+      }
     } catch (error) {
       console.error('Error fetching messages:', error);
+      toast({
+        title: 'Suggestion Error',
+        description: 'Failed to load new questions. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSuggestLoading(false);
     }
   };
 
@@ -204,21 +212,17 @@ export default function SendMessage() {
           </div>
 
           <div className="grid grid-cols-1 gap-2.5 pt-2">
-            {error ? (
-              <p className="text-red-400 text-xs">{error.message}</p>
-            ) : (
-              parseStringMessages(completion).map((msg, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleMessageClick(msg)}
-                  className="w-full text-left p-4 rounded-xl bg-black/60 hover:bg-black/90 border border-neutral-800 hover:border-amber-400 text-neutral-200 hover:text-amber-300 text-xs md:text-sm font-semibold transition-all group shadow-sm"
-                >
-                  <span className="text-amber-400 mr-2 group-hover:translate-x-1 inline-block transition-transform">→</span>
-                  "{msg}"
-                </button>
-              ))
-            )}
+            {suggestedQuestions.map((msg, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleMessageClick(msg)}
+                className="w-full text-left p-4 rounded-xl bg-black/60 hover:bg-black/90 border border-neutral-800 hover:border-amber-400 text-neutral-200 hover:text-amber-300 text-xs md:text-sm font-semibold transition-all group shadow-sm cursor-pointer"
+              >
+                <span className="text-amber-400 mr-2 group-hover:translate-x-1 inline-block transition-transform">→</span>
+                "{msg}"
+              </button>
+            ))}
           </div>
         </div>
 
