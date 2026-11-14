@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import PaperTearScrollScene from '@/components/PaperTearScrollScene';
-import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown, Volume2, Sparkles } from 'lucide-react';
+import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown, Volume2 } from 'lucide-react';
 import { paperAudio } from '@/lib/paperAudio';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -34,8 +34,19 @@ export default function Home() {
   const pinSectionRef = useRef<HTMLDivElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [audioActivated, setAudioActivated] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
+    const handleWindowScroll = () => {
+      if (window.scrollY > 10) {
+        setHasScrolled(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    window.addEventListener('wheel', () => setHasScrolled(true), { passive: true, once: true });
+    window.addEventListener('touchmove', () => setHasScrolled(true), { passive: true, once: true });
+
     if (!pinSectionRef.current) return;
 
     const st = ScrollTrigger.create({
@@ -45,10 +56,14 @@ export default function Home() {
       scrub: 0.3,
       onUpdate: (self) => {
         setScrollProgress(self.progress);
+        if (self.progress > 0.005) {
+          setHasScrolled(true);
+        }
       },
     });
 
     return () => {
+      window.removeEventListener('scroll', handleWindowScroll);
       st.kill();
     };
   }, []);
@@ -120,15 +135,14 @@ export default function Home() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 font-black">
                   Click Me to Enter Mystry World
                 </span>
-                <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
               </button>
             </div>
           </div>
         )}
 
-        {/* Direction prompt: Erases completely as soon as user starts scrolling (scrollProgress > 0.01) */}
-        {audioActivated && scrollProgress < 0.02 && (
-          <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center transition-opacity duration-300">
+        {/* Direction prompt: Erases immediately as soon as user starts scrolling or moves wheel */}
+        {audioActivated && !hasScrolled && scrollProgress < 0.008 && (
+          <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center transition-opacity duration-200">
             <div className="pointer-events-auto animate-bounce flex flex-col items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#0a0a0e]/90 border border-amber-400/60 shadow-[0_0_30px_rgba(251,191,36,0.5)] backdrop-blur-md">
               <div className="flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-widest text-amber-300">
                 <span>Scroll Now to Tear</span>
@@ -140,7 +154,7 @@ export default function Home() {
 
         {/* Website Content Revealed from Behind the Tearing Golden Paper */}
         <div className="relative z-0 max-w-4xl mx-auto px-4 md:px-12 text-center space-y-6 pt-8 md:pt-10">
-          
+
           {/* Royal Pill Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-[#141418]/90 text-amber-300 border border-amber-500/30 shadow-2xl backdrop-blur-md">
             <Crown className="w-3.5 h-3.5 text-amber-400" />
@@ -236,7 +250,7 @@ export default function Home() {
           REVEALED SECTIONS BELOW (EXPERIENCE & FEATURES)
           ========================================================================= */}
       <section className="relative z-20 py-20 px-4 md:px-12 max-w-5xl mx-auto space-y-20">
-        
+
         {/* Live Message Showcase */}
         <div>
           <div className="flex items-center justify-center gap-2 mb-8">
