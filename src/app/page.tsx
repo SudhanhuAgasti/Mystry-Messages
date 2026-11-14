@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import PaperTearScrollScene from '@/components/PaperTearScrollScene';
-import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown } from 'lucide-react';
+import { paperAudio } from '@/lib/paperAudio';
+import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, Sparkles, Volume2 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -32,6 +33,7 @@ const sampleMessages = [
 export default function Home() {
   const pinSectionRef = useRef<HTMLDivElement | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [audioActivated, setAudioActivated] = useState(false);
 
   useEffect(() => {
     if (!pinSectionRef.current) return;
@@ -43,19 +45,34 @@ export default function Home() {
       scrub: 0.3,
       onUpdate: (self) => {
         setScrollProgress(self.progress);
+        if (self.progress > 0.05 && !audioActivated) {
+          setAudioActivated(true);
+        }
       },
     });
 
     return () => {
       st.kill();
     };
-  }, []);
+  }, [audioActivated]);
+
+  // Handler for "Click to Tear the Paper" button
+  const handleTearInitiate = () => {
+    paperAudio.resumeContext();
+    paperAudio.playTearGrain(1.6);
+    setAudioActivated(true);
+
+    // Smooth scroll down to initiate paper tear opening
+    window.scrollBy({
+      top: window.innerHeight * 0.45,
+      behavior: 'smooth',
+    });
+  };
 
   // Compute exact drop physics proportional to paper tear progress (0 to 1)
   // Initially words are visible (opacity: 1) resting in place.
   // As user scrolls and paper tears from center outwards, words drop down into place dynamically
   const getWordStyle = (dropStart: number, dropEnd: number) => {
-    // If not scrolled yet (0 to 0.02), display in place so user is never faced with an empty black void
     if (scrollProgress < 0.02) {
       return {
         transform: 'translate3d(0, 0px, 0) scale(1)',
@@ -66,7 +83,6 @@ export default function Home() {
 
     const rawT = (scrollProgress - dropStart) / (dropEnd - dropStart);
     const t = Math.min(1, Math.max(0, rawT));
-    // Smooth easeOutBack curve for crisp physical dropping weight
     const easeT = 1 - Math.pow(1 - t, 3);
     const y = -45 * (1 - easeT);
     const opacity = 0.2 + 0.8 * easeT;
@@ -164,26 +180,41 @@ export default function Home() {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2">
             <Link href="/sign-up" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-black font-extrabold px-8 py-6 text-base rounded-2xl shadow-2xl transition-all hover:scale-105 border-0">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-black font-extrabold px-8 py-5 text-base rounded-2xl shadow-2xl transition-all hover:scale-105 border-0">
                 Claim Your Link <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
             <Link href="/sign-in" className="w-full sm:w-auto">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto bg-[#101015]/80 backdrop-blur-md hover:bg-black text-white hover:text-amber-300 border border-amber-500/40 hover:border-amber-400 font-bold px-8 py-6 text-base rounded-2xl transition-all shadow-lg"
+                className="w-full sm:w-auto bg-[#101015]/80 backdrop-blur-md hover:bg-black text-white hover:text-amber-300 border border-amber-500/40 hover:border-amber-400 font-bold px-8 py-5 text-base rounded-2xl transition-all shadow-lg"
               >
                 Sign In to Dashboard
               </Button>
             </Link>
           </div>
 
-          {/* Scroll Down Prompt Indicator */}
-          <div className="pt-8 flex flex-col items-center justify-center gap-1.5 text-xs text-amber-400/90 font-bold uppercase tracking-widest animate-bounce pointer-events-none">
-            <span>Scroll to Tear Open</span>
-            <ChevronDown className="w-4 h-4 text-amber-400" />
+          {/* Premium Animated Interactive Button: "Click to Tear the Paper" */}
+          <div className="pt-3 flex flex-col items-center justify-center">
+            <button
+              onClick={handleTearInitiate}
+              type="button"
+              className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-[#1c180e] via-[#241d0f] to-[#1c180e] border border-amber-500/50 hover:border-amber-400 text-amber-300 hover:text-amber-200 text-xs md:text-sm font-extrabold tracking-wider uppercase transition-all duration-300 shadow-[0_0_25px_rgba(245,158,11,0.25)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] hover:scale-105 active:scale-95 cursor-pointer z-30"
+            >
+              {/* Pulsing golden aura glow behind button */}
+              <span className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/40 via-yellow-400/50 to-amber-500/40 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition duration-300 animate-pulse" />
+              
+              <span className="relative flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '4s' }} />
+                <span>Click to Tear the Paper</span>
+                <Volume2 className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
+              </span>
+            </button>
+            <p className="mt-1.5 text-[11px] text-neutral-400/80 font-medium">
+              Activates sound &bull; Scroll down to tear through
+            </p>
           </div>
         </div>
       </section>
