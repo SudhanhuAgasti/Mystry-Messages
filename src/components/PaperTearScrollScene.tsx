@@ -326,7 +326,7 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
   return (
     <div
       ref={mountRef}
-      className="absolute inset-0 w-full h-full pointer-events-none z-30"
+      className="fixed inset-0 w-screen h-screen pointer-events-none z-[60]"
       aria-hidden="true"
     />
   );
