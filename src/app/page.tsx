@@ -147,7 +147,7 @@ export default function Home() {
 
         {/* Center Floating Interactive Audio Activator & Scroll Direction Prompt */}
         {!audioActivated && (
-          <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+          <div className="absolute inset-0 z-40 pointer-events-none flex items-center justify-center">
             <div className="pointer-events-auto transition-all duration-300 transform hover:scale-105 active:scale-95">
               <button
                 onClick={handleActivateAndTear}
@@ -168,7 +168,7 @@ export default function Home() {
 
         {/* Direction prompt: Erases immediately as soon as user starts scrolling or moves wheel */}
         {audioActivated && !hasScrolled && scrollProgress < 0.008 && (
-          <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center transition-opacity duration-200">
+          <div className="absolute inset-0 z-40 pointer-events-none flex items-center justify-center transition-opacity duration-200">
             <div className="pointer-events-auto animate-bounce flex flex-col items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-[#0a0a0e]/90 border border-amber-400/60 shadow-[0_0_30px_rgba(251,191,36,0.5)] backdrop-blur-md">
               <div className="flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-widest text-amber-300">
                 <span>Scroll Now to Tear</span>

@@ -11,7 +11,7 @@ function Navbar() {
     const user = session?.user;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-2xl bg-[#0a0a0d]/90 border-b border-[#2b2512]/60 px-4 md:px-8 py-1 md:py-1.5 shadow-2xl transition-all">
+        <header className="fixed top-0 left-0 right-0 z-20 w-full backdrop-blur-2xl bg-[#0a0a0d]/90 border-b border-[#2b2512]/60 px-4 md:px-8 py-1 md:py-1.5 shadow-2xl transition-all">
             <div className="container mx-auto flex flex-row justify-between items-center h-10 md:h-11">
                 {/* Logo with Royal Crown */}
                 <Link href="/" className="flex items-center gap-2 group">
