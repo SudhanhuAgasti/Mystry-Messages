@@ -301,6 +301,9 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Refresh ScrollTrigger to ensure correct pin coordinates on route change
+    ScrollTrigger.refresh();
+
     // 8. Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);

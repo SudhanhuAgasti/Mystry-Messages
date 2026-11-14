@@ -37,7 +37,7 @@ export default function Home() {
   const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
-    // Lock scrolling on page until user clicks the button
+    // Check if session storage or state allows normal scrolling
     if (!audioActivated) {
       document.body.style.overflow = 'hidden';
       window.scrollTo(0, 0);
@@ -46,11 +46,15 @@ export default function Home() {
     }
 
     return () => {
+      // Always restore scrollability on unmount/navigation so returning to home doesn't freeze
       document.body.style.overflow = '';
     };
   }, [audioActivated]);
 
   useEffect(() => {
+    // Always refresh ScrollTrigger when returning back from navigation (e.g. from /sign-in)
+    ScrollTrigger.refresh();
+
     const handleWindowScroll = () => {
       if (window.scrollY > 10) {
         setHasScrolled(true);
@@ -76,9 +80,16 @@ export default function Home() {
       },
     });
 
+    // Short timeout to guarantee layout recalculation after client-side router transition
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('scroll', handleWindowScroll);
       st.kill();
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -147,7 +158,6 @@ export default function Home() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-400"></span>
                 </span>
-                <Volume2 className="w-5 h-5 text-amber-400 group-hover:rotate-12 transition-transform" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 font-black">
                   Click Me to Enter Mystry World
                 </span>
