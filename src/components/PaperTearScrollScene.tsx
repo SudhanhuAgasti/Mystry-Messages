@@ -100,9 +100,9 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
     paperTexture.repeat.set(2, 2);
 
     // 4. Mesh Creation: Two Subdivided Deformable Halves (Left & Right)
-    // High tessellation (60x60 segments) for smooth physical bending and curling
-    const planeWidth = 5.6;
-    const planeHeight = 7.0;
+    // Extra tall (8.5 height) and wide (6.8 width) so it 100% covers viewport edges and top navbar
+    const planeWidth = 6.8;
+    const planeHeight = 8.8;
     const segmentsX = 64;
     const segmentsY = 72;
 
@@ -190,19 +190,19 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
     const updatePaperDeformation = (p: number) => {
       // 1. Mesh Positions and rotations
       // Outward separation
-      leftPaperMesh.position.x = -planeWidth / 2 + 0.15 - p * 5.2;
+      leftPaperMesh.position.x = -planeWidth / 2 + 0.15 - p * 6.5;
       leftPaperMesh.position.z = p * 1.8;
       leftPaperMesh.rotation.y = p * 0.45;
       leftPaperMesh.rotation.z = p * 0.22;
 
-      rightPaperMesh.position.x = planeWidth / 2 - 0.15 + p * 5.4;
+      rightPaperMesh.position.x = planeWidth / 2 - 0.15 + p * 6.8;
       rightPaperMesh.position.z = p * 2.1;
       rightPaperMesh.rotation.y = -p * 0.52;
       rightPaperMesh.rotation.z = -p * 0.28;
 
       // Underneath layer moves away organically
-      underMesh.position.x = 2.0 + p * 3.8;
-      underMesh.position.y = -1.8 - p * 2.5;
+      underMesh.position.x = 2.0 + p * 4.5;
+      underMesh.position.y = -1.8 - p * 3.0;
       underMesh.rotation.z = 0.45 - p * 0.6;
       underMesh.scale.setScalar(1 - p * 0.5);
 
@@ -286,12 +286,13 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
       const newHeight = window.innerHeight;
       camera.aspect = newWidth / newHeight;
       // Responsive dynamic camera distance for Mobile, Tablet and Desktop
+      // Closer camera ensures paper covers full edges up to top navbar
       if (newWidth < 640) {
-        camera.position.z = 10.8;
+        camera.position.z = 9.2;
       } else if (newWidth < 1024) {
-        camera.position.z = 8.8;
-      } else {
         camera.position.z = 7.5;
+      } else {
+        camera.position.z = 6.2;
       }
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
