@@ -23,6 +23,11 @@ Requirements:
 - Return exactly 3 questions.
 - Separate them ONLY with "||".
 - Do not use numbers, bullet points, introductory text, quotes or markdown.
+-Suitable for an anonymous social messaging platform similarto Qooh.
+-be Avoid personal, controversial, or sensitive topics.
+-Focus on fun, universal, and conversation-starting questions.
+-Do not include numbering, bullet points, quotes, or any extra text.
+-Return only the single string.
 - Example output: What's your secret dream?||Who was your first crush?||What's the best memory we share?
 `;
 
