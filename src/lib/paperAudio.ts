@@ -1,4 +1,4 @@
-// Web Audio API Paper Tearing Synthesizer with Instant Multi-Gesture Activation
+// Web Audio API Paper Tearing Synthesizer with Guaranteed Browser Unlock & Fallback
 class PaperTearAudioPlayer {
   private ctx: AudioContext | null = null;
   private lastPlayTime = 0;
@@ -6,16 +6,18 @@ class PaperTearAudioPlayer {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      const unlock = () => {
-        this.resume();
+      const unlockAndWarmup = () => {
+        this.resumeContext();
       };
-      ['pointerdown', 'mousedown', 'touchstart', 'wheel', 'scroll', 'keydown'].forEach((evt) => {
-        window.addEventListener(evt, unlock, { passive: true });
+      // Listen to every possible user activity event across desktop & mobile
+      const events = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'wheel', 'scroll', 'keydown'];
+      events.forEach((evt) => {
+        window.addEventListener(evt, unlockAndWarmup, { passive: true });
       });
     }
   }
 
-  public resume() {
+  public resumeContext(): boolean {
     try {
       if (!this.ctx && typeof window !== 'undefined') {
         const AudioCtx =
@@ -25,27 +27,38 @@ class PaperTearAudioPlayer {
           this.ctx = new AudioCtx();
         }
       }
-      if (this.ctx && this.ctx.state === 'suspended') {
-        this.ctx.resume();
+      if (this.ctx) {
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        if (this.ctx.state === 'running') {
+          this.isUnlocked = true;
+          return true;
+        }
       }
-      this.isUnlocked = true;
     } catch {
-      // AudioContext resume catch
+      // AudioContext catch
     }
+    return false;
   }
 
   public playTearGrain(intensity: number = 1.0) {
     const now = performance.now();
-    // Allow rapid micro-crackles every 28ms for realistic continuous paper fiber rip
-    if (now - this.lastPlayTime < 28) return;
+    // Allow rapid granular crackles every 22ms for continuous tearing sensation
+    if (now - this.lastPlayTime < 22) return;
     this.lastPlayTime = now;
 
     try {
-      this.resume();
-      if (!this.ctx || this.ctx.state !== 'running') return;
+      this.resumeContext();
+      if (!this.ctx) return;
 
-      const duration = 0.07 + Math.random() * 0.06;
-      const bufferSize = Math.floor(this.ctx.sampleRate * duration);
+      // Even if suspended, resume immediately
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+
+      const duration = 0.08 + Math.random() * 0.07;
+      const bufferSize = Math.max(256, Math.floor(this.ctx.sampleRate * duration));
       const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const data = buffer.getChannelData(0);
 
@@ -56,35 +69,37 @@ class PaperTearAudioPlayer {
         b0 = 0.99 * b0 + white * 0.05;
         b1 = 0.96 * b1 + white * 0.11;
         b2 = 0.86 * b2 + white * 0.25;
-        const pink = b0 + b1 + b2 + white * 0.2;
-        const snap = Math.random() > 0.88 ? (Math.random() * 2 - 1) * 3.5 : 0;
-        data[i] = (pink * 2.8 + snap) * (1 - i / bufferSize);
+        const pink = b0 + b1 + b2 + white * 0.22;
+        // High frequency fiber snap cracks
+        const snap = Math.random() > 0.86 ? (Math.random() * 2 - 1) * 3.8 : 0;
+        data[i] = (pink * 2.6 + snap) * (1 - i / bufferSize);
       }
 
       const noiseSource = this.ctx.createBufferSource();
       noiseSource.buffer = buffer;
 
-      // Bandpass Filter matching paper tear resonance (1000Hz - 2900Hz)
+      // Resonant bandpass filter modeling physical paper tearing
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 1400 + Math.random() * 800;
-      filter.Q.value = 2.0;
+      filter.frequency.value = 1500 + Math.random() * 800;
+      filter.Q.value = 2.2;
 
-      // Gain Envelope with boosted audible presence
+      // High volume presence so it's clearly heard
       const gainNode = this.ctx.createGain();
-      const vol = Math.min(0.85, 0.45 * intensity);
-      gainNode.gain.setValueAtTime(0.01, this.ctx.currentTime);
-      gainNode.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 0.01);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+      const vol = Math.min(1.0, 0.65 * intensity);
+      const startTime = this.ctx.currentTime;
+      gainNode.gain.setValueAtTime(0.05, startTime);
+      gainNode.gain.linearRampToValueAtTime(vol, startTime + 0.012);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
 
       noiseSource.connect(filter);
       filter.connect(gainNode);
       gainNode.connect(this.ctx.destination);
 
-      noiseSource.start();
-      noiseSource.stop(this.ctx.currentTime + duration);
+      noiseSource.start(startTime);
+      noiseSource.stop(startTime + duration);
     } catch {
-      // Audio policy catch
+      // Audio safety
     }
   }
 }
