@@ -113,7 +113,7 @@ export default function Home() {
           ========================================================================= */}
       <section
         ref={pinSectionRef}
-        className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center"
+        className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center pt-20 md:pt-24"
       >
         {/* 3D Paper Tearing Canvas Overlay with Tearing Sound */}
         <PaperTearScrollScene containerRef={pinSectionRef} />
@@ -153,26 +153,26 @@ export default function Home() {
         )}
 
         {/* Website Content Revealed from Behind the Tearing Golden Paper */}
-        <div className="relative z-0 max-w-4xl mx-auto px-4 md:px-12 text-center space-y-6 pt-8 md:pt-10">
+        <div className="relative z-0 max-w-4xl mx-auto px-4 md:px-12 text-center space-y-4 md:space-y-5">
 
           {/* Royal Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-[#141418]/90 text-amber-300 border border-amber-500/30 shadow-2xl backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-[#141418]/90 text-amber-300 border border-amber-500/30 shadow-2xl backdrop-blur-md">
             <Crown className="w-3.5 h-3.5 text-amber-400" />
             <span>The Premier Anonymous Messaging Experience</span>
           </div>
 
           {/* Heading with REAL-TIME SCROLL SYNCHRONIZED 1-BY-1 DROP */}
-          <div className="py-2">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-none text-white drop-shadow-2xl">
+          <div className="py-1">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-tight text-white drop-shadow-2xl">
               {/* Line 1: Unfiltered [Bubble] Truth */}
-              <div className="font-serif italic font-black flex items-center justify-center gap-3 sm:gap-4 md:gap-5 flex-wrap">
+              <div className="font-serif italic font-black flex items-center justify-center gap-2.5 sm:gap-3.5 md:gap-4 flex-wrap">
                 <span
                   style={getWordStyle(0.02, 0.22)}
                   className="text-amber-400 relative inline-flex items-baseline will-change-transform"
                 >
                   {/* White 'U' with Royal Crown tilted on top */}
                   <span className="relative inline-block text-white mr-0.5">
-                    <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 text-amber-400 fill-amber-400 absolute -top-5 sm:-top-7 md:-top-8 left-1/2 -translate-x-1/2 -rotate-12 drop-shadow-[0_2px_10px_rgba(251,191,36,0.6)]" />
+                    <Crown className="w-5 h-5 sm:w-7 sm:h-7 md:w-8 md:h-8 text-amber-400 fill-amber-400 absolute -top-4 sm:-top-6 md:-top-7 left-1/2 -translate-x-1/2 -rotate-12 drop-shadow-[0_2px_10px_rgba(251,191,36,0.6)]" />
                     U
                   </span>
                   <span>nfiltered</span>
@@ -186,7 +186,7 @@ export default function Home() {
                   <img
                     src="/yellow-chat-bubble.svg"
                     alt="Chat Bubble"
-                    className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.5)] transform -rotate-6 hover:rotate-6 hover:scale-110 transition-all duration-300"
+                    className="w-8 h-8 sm:w-11 sm:h-11 md:w-13 md:h-13 object-contain drop-shadow-[0_4px_16px_rgba(250,204,21,0.5)] transform -rotate-6 hover:rotate-6 hover:scale-110 transition-all duration-300"
                   />
                 </span>
 
@@ -199,7 +199,7 @@ export default function Home() {
               </div>
 
               {/* Line 2: Complete Anonymity */}
-              <div className="font-sans uppercase font-extrabold tracking-wider mt-3 flex items-center justify-center gap-3 sm:gap-4 flex-wrap text-white">
+              <div className="font-sans uppercase font-extrabold tracking-wider mt-2 flex items-center justify-center gap-2.5 sm:gap-3.5 flex-wrap text-white">
                 <span
                   style={getWordStyle(0.55, 0.75)}
                   className="will-change-transform"
@@ -208,7 +208,7 @@ export default function Home() {
                 </span>
                 <span
                   style={getWordStyle(0.72, 0.95)}
-                  className="bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-4 py-1 rounded-2xl shadow-2xl font-black will-change-transform"
+                  className="bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-3.5 py-0.5 sm:px-4 sm:py-1 rounded-2xl shadow-2xl font-black will-change-transform"
                 >
                   Anonymity.
                 </span>
@@ -217,31 +217,25 @@ export default function Home() {
           </div>
 
           {/* Subtitle */}
-          <p className="mt-4 text-base md:text-xl text-neutral-300 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow">
+          <p className="text-sm sm:text-base md:text-lg text-neutral-300 font-medium max-w-xl mx-auto leading-relaxed drop-shadow">
             Create your personal link, share it anywhere, and receive candid feedback, secrets, and confessions with 100% sender privacy.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
             <Link href="/sign-up" className="w-full sm:w-auto">
-              <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-black font-extrabold px-8 py-6 text-base rounded-2xl shadow-2xl transition-all hover:scale-105 border-0">
+              <Button className="w-full sm:w-auto bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-black font-extrabold px-7 py-5 text-sm sm:text-base rounded-2xl shadow-2xl transition-all hover:scale-105 border-0">
                 Claim Your Link <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
             <Link href="/sign-in" className="w-full sm:w-auto">
               <Button
                 variant="outline"
-                className="w-full sm:w-auto bg-[#101015]/80 backdrop-blur-md hover:bg-black text-white hover:text-amber-300 border border-amber-500/40 hover:border-amber-400 font-bold px-8 py-6 text-base rounded-2xl transition-all shadow-lg"
+                className="w-full sm:w-auto bg-[#101015]/80 backdrop-blur-md hover:bg-black text-white hover:text-amber-300 border border-amber-500/40 hover:border-amber-400 font-bold px-7 py-5 text-sm sm:text-base rounded-2xl transition-all shadow-lg"
               >
                 Sign In to Dashboard
               </Button>
             </Link>
-          </div>
-
-          {/* Scroll Down Prompt Indicator */}
-          <div className="pt-8 flex flex-col items-center justify-center gap-1.5 text-xs text-amber-400/90 font-bold uppercase tracking-widest animate-bounce pointer-events-none">
-            <span>Scroll to Tear Open</span>
-            <ChevronDown className="w-4 h-4 text-amber-400" />
           </div>
         </div>
       </section>
