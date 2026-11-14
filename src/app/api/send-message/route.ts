@@ -8,12 +8,15 @@ export async function POST(request: Request) {
 
     const { username, content } = await request.json()
     try {
-        const user = await UserModel.findOne({ username })
+        // Find user case-insensitively or exact
+        const user = await UserModel.findOne({
+            username: { $regex: new RegExp(`^${username}$`, 'i') }
+        });
         if (!user) {
             return Response.json(
                 {
                     success: false,
-                    message: "User not found "
+                    message: `User "@${username}" not found`
                 }, { status: 404 }
             )
         }
