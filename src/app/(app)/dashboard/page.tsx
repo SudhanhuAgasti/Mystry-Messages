@@ -20,11 +20,32 @@ import TornPaperBackground from '@/components/TornPaperBackground';
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<'next' | 'prev'>('next');
+  const [isSwiping, setIsSwiping] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const { toast } = useToast();
+
+  const handleSwipe = useCallback((direction: 'next' | 'prev') => {
+    if (isSwiping) return;
+    if (direction === 'next' && activeCardIndex < messages.length - 1) {
+      setSwipeDirection('next');
+      setIsSwiping(true);
+      setTimeout(() => {
+        setActiveCardIndex((prev) => prev + 1);
+        setIsSwiping(false);
+      }, 320);
+    } else if (direction === 'prev' && activeCardIndex > 0) {
+      setSwipeDirection('prev');
+      setIsSwiping(true);
+      setTimeout(() => {
+        setActiveCardIndex((prev) => prev - 1);
+        setIsSwiping(false);
+      }, 320);
+    }
+  }, [activeCardIndex, messages.length, isSwiping]);
 
   const handleDeleteMessage = (messageId: string) => {
     setMessages((prevMessages) => {
@@ -254,8 +275,8 @@ function UserDashboard() {
                   <Button
                     size="sm"
                     variant="outline"
-                    disabled={activeCardIndex === 0}
-                    onClick={() => setActiveCardIndex((prev) => Math.max(0, prev - 1))}
+                    disabled={activeCardIndex === 0 || isSwiping}
+                    onClick={() => handleSwipe('prev')}
                     className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
                   >
                     <ChevronUp className="w-4 h-4 mr-1" />
@@ -265,8 +286,8 @@ function UserDashboard() {
                   <Button
                     size="sm"
                     variant="outline"
-                    disabled={activeCardIndex >= messages.length - 1}
-                    onClick={() => setActiveCardIndex((prev) => Math.min(messages.length - 1, prev + 1))}
+                    disabled={activeCardIndex >= messages.length - 1 || isSwiping}
+                    onClick={() => handleSwipe('next')}
                     className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
                   >
                     Next
@@ -275,29 +296,40 @@ function UserDashboard() {
                 </div>
               </div>
 
-              {/* Interactive 3D Stack Stage */}
+              {/* Interactive 3D Stack Stage with Smooth Physical Swipe Animation */}
               <div 
                 onWheel={(e) => {
-                  if (e.deltaY > 25 && activeCardIndex < messages.length - 1) {
-                    setActiveCardIndex((prev) => Math.min(messages.length - 1, prev + 1));
-                  } else if (e.deltaY < -25 && activeCardIndex > 0) {
-                    setActiveCardIndex((prev) => Math.max(0, prev - 1));
+                  if (isSwiping) return;
+                  if (e.deltaY > 15 && activeCardIndex < messages.length - 1) {
+                    handleSwipe('next');
+                  } else if (e.deltaY < -15 && activeCardIndex > 0) {
+                    handleSwipe('prev');
                   }
                 }}
-                className="relative py-6 min-h-[300px] flex items-center justify-center cursor-ns-resize"
+                className="relative py-8 min-h-[340px] flex items-center justify-center overflow-hidden cursor-ns-resize"
               >
-                <MessageCard
-                  key={messages[activeCardIndex]._id.toString()}
-                  message={messages[activeCardIndex]}
-                  index={activeCardIndex}
-                  total={messages.length}
-                  onMessageDelete={handleDeleteMessage}
-                />
+                <div
+                  className={`w-full transition-all duration-300 ease-out transform ${
+                    isSwiping
+                      ? swipeDirection === 'next'
+                        ? '-translate-y-24 rotate-[-8deg] opacity-0 scale-90'
+                        : 'translate-y-24 rotate-[8deg] opacity-0 scale-90'
+                      : 'translate-y-0 rotate-0 opacity-100 scale-100'
+                  }`}
+                >
+                  <MessageCard
+                    key={messages[activeCardIndex]._id.toString()}
+                    message={messages[activeCardIndex]}
+                    index={activeCardIndex}
+                    total={messages.length}
+                    onMessageDelete={handleDeleteMessage}
+                  />
+                </div>
               </div>
 
               {/* Scroll / Swipe Tip */}
               <p className="text-center text-[11px] font-bold text-neutral-400 uppercase tracking-widest">
-                💡 Tip: Use mouse wheel, trackpad scroll, or Previous / Next to shuffle cards
+                💡 Scroll mouse wheel or swipe up/down to flip through cards with 3D effect
               </p>
             </div>
           ) : (
