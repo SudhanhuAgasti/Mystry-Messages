@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import PaperTearScrollScene from '@/components/PaperTearScrollScene';
-import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown, Volume2 } from 'lucide-react';
+import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown } from 'lucide-react';
 import { paperAudio } from '@/lib/paperAudio';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -35,6 +35,20 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [audioActivated, setAudioActivated] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    // Lock scrolling on page until user clicks the button
+    if (!audioActivated) {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [audioActivated]);
 
   useEffect(() => {
     const handleWindowScroll = () => {
@@ -73,6 +87,8 @@ export default function Home() {
     paperAudio.resumeContext();
     paperAudio.playTearGrain(1.6);
     setAudioActivated(true);
+    // Unlocks page scrolling
+    document.body.style.overflow = '';
   };
 
   // Compute exact drop physics proportional to paper tear progress (0 to 1)
