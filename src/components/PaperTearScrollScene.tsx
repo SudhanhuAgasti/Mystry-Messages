@@ -253,8 +253,8 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
 
         // Calculate scroll delta velocity for audio crunch
         const delta = Math.abs(self.progress - lastP);
-        if (delta > 0.003 && self.progress < 0.95) {
-          paperAudio.playTearGrain(Math.min(3.0, delta * 80));
+        if (delta > 0.0008 && self.progress < 0.98) {
+          paperAudio.playTearGrain(Math.min(3.5, delta * 120));
         }
         lastP = self.progress;
       },
