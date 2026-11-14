@@ -116,13 +116,13 @@ export default function SignUpForm() {
 
       <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f14]/90 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl relative z-10">
         {/* Close / Cross Button to return Home */}
-        <Link
+        <a
           href="/"
           aria-label="Close"
-          className="absolute top-5 right-5 p-2 rounded-full bg-[#181820] border border-amber-500/20 text-neutral-400 hover:text-white hover:border-amber-400 hover:bg-[#20202a] transition-all"
+          className="absolute top-5 right-5 p-2 rounded-full bg-[#181820] border border-amber-500/20 text-neutral-400 hover:text-white hover:border-amber-400 hover:bg-[#20202a] transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
-        </Link>
+        </a>
 
         {/* Crown Header */}
         <div className="text-center space-y-2">
