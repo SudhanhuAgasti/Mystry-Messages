@@ -11,11 +11,11 @@ function Navbar() {
     const user = session?.user;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-xl bg-[#0a0a0d]/80 border-b border-[#2b2512]/40 px-4 md:px-8 py-2 md:py-2.5 shadow-xl transition-all">
+        <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-2xl bg-[#0a0a0d]/90 border-b border-[#2b2512]/60 px-4 md:px-8 py-2 md:py-2.5 shadow-2xl transition-all">
             <div className="container mx-auto flex flex-row justify-between items-center">
                 {/* Logo with Royal Crown */}
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="p-1 rounded-lg bg-gradient-to-br from-amber-400 to-yellow-600 shadow-sm shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <div className="p-1 rounded-md bg-gradient-to-br from-amber-400 to-yellow-600 shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
                         <Crown className="w-4 h-4 text-black" />
                     </div>
                     <span className="text-lg md:text-xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-sans">
