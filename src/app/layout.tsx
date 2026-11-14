@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", outfit.variable, playfair.variable)}>
       <AuthProvider>
-        <body className="overflow-x-hidden touch-manipulation">
+        <body className="overflow-x-hidden touch-manipulation bg-[#0b0b0e] text-neutral-100 min-h-screen">
           {children}
           <Toaster />
         </body>

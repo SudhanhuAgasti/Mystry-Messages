@@ -17,9 +17,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { signInSchema } from '@/schemas/signInSchema';
-import { Crown, Lock, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { Crown, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import TornPaperBackground from '@/components/TornPaperBackground';
 
 export default function SignInForm() {
     const router = useRouter();
@@ -65,11 +66,20 @@ export default function SignInForm() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-[#070709] px-4 py-12 relative overflow-hidden font-sans">
-            {/* Ambient Gold Glow */}
-            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-transparent blur-3xl pointer-events-none rounded-full" />
+        <div className="flex justify-center items-center min-h-screen bg-[#0b0b0e] px-4 py-12 relative overflow-hidden font-sans selection:bg-amber-400 selection:text-black">
+            {/* Torn Paper Background */}
+            <TornPaperBackground />
 
-            <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f13] border border-[#2d2512] rounded-2xl shadow-2xl relative z-10">
+            <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f14]/90 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl relative z-10">
+                {/* Close / Cross Button to return Home */}
+                <Link
+                    href="/"
+                    aria-label="Close"
+                    className="absolute top-5 right-5 p-2 rounded-full bg-[#181820] border border-amber-500/20 text-neutral-400 hover:text-white hover:border-amber-400 hover:bg-[#20202a] transition-all"
+                >
+                    <X className="w-4 h-4" />
+                </Link>
+
                 {/* Crown Header */}
                 <div className="text-center space-y-2">
                     <div className="inline-flex p-2.5 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 shadow-lg shadow-amber-500/20 mb-2">
@@ -96,7 +106,7 @@ export default function SignInForm() {
                                     <div className="relative">
                                         <Input
                                             placeholder="Enter your email or username"
-                                            className="bg-[#09090c] border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
+                                            className="bg-black/80 border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
                                             {...field}
                                         />
                                     </div>
@@ -116,7 +126,7 @@ export default function SignInForm() {
                                     <Input
                                         type="password"
                                         placeholder="••••••••"
-                                        className="bg-[#09090c] border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
+                                        className="bg-black/80 border-[#292212] focus-visible:ring-amber-500/50 text-neutral-100 placeholder:text-neutral-600 rounded-xl pl-4 py-2 text-sm"
                                         {...field}
                                     />
                                     <FormMessage className="text-xs text-red-400" />
