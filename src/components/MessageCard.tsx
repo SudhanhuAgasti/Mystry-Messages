@@ -23,9 +23,11 @@ import { ApiResponse } from '@/types/ApiResponse';
 type MessageCardProps = {
   message: Message;
   onMessageDelete: (messageId: string) => void;
+  index?: number;
+  total?: number;
 };
 
-export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
+export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: MessageCardProps) {
   const { toast } = useToast();
 
   const handleDeleteConfirm = async () => {
@@ -49,35 +51,42 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
   };
 
   return (
-    // Outer Container with 3D Stacked-Card Illusion (Card on top of Card)
-    <div className="relative group pt-2.5 pb-2 transition-all duration-300">
+    // Outer Stack Container
+    <div className="relative w-full max-w-xl mx-auto select-none">
       
-      {/* Underlying Stack Layer 2 (Bottom-most card tilt) */}
+      {/* Underlying Stack Layer 2 (Bottom-most subtle tilted card) */}
       <div 
-        className="absolute inset-x-3 bottom-0 h-10 rounded-2xl bg-[#a66e0b] border-2 border-black opacity-40 transform translate-y-1.5 rotate-[-1.5deg] transition-transform duration-300 group-hover:translate-y-2 group-hover:rotate-[-2deg]" 
+        className="absolute inset-x-4 -bottom-3.5 h-14 rounded-3xl bg-[#98b6c8] border-2 border-black opacity-35 transform rotate-[-2.5deg] shadow-lg" 
         aria-hidden="true" 
       />
 
-      {/* Underlying Stack Layer 1 (Middle card layer) */}
+      {/* Underlying Stack Layer 1 (Middle tilted card) */}
       <div 
-        className="absolute inset-x-1.5 bottom-1 h-12 rounded-2xl bg-[#c68913] border-2 border-black opacity-80 transform translate-y-1 rotate-[1deg] transition-transform duration-300 group-hover:translate-y-1.5 group-hover:rotate-[1.5deg]" 
+        className="absolute inset-x-2 -bottom-2 h-14 rounded-3xl bg-[#b7d0df] border-2 border-black opacity-70 transform rotate-[1.8deg] shadow-md" 
         aria-hidden="true" 
       />
 
-      {/* Main Top Card: Rich Luxury Golden Textured Card with Solid Thick Black Border */}
-      <div className="relative z-10 rounded-2xl bg-gradient-to-br from-[#f5b82e] via-[#e5a51c] to-[#d49618] border-[2.5px] border-black p-6 md:p-7 shadow-[0_12px_30px_rgba(0,0,0,0.7)] group-hover:shadow-[0_18px_40px_rgba(229,165,28,0.3)] transition-all duration-300 group-hover:-translate-y-1">
+      {/* Main Top Card: Elegant Creamy Ice Blue with Solid Black Border & Velvet Depth */}
+      <div className="relative z-10 rounded-3xl bg-gradient-to-br from-[#eaf4fa] via-[#d6e8f4] to-[#c2ddee] border-[2.5px] border-black p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-300">
         
-        {/* Subtle Luxury Paper Texture Lines */}
+        {/* Subtle Frosted Paper Fiber Effect */}
         <div 
-          className="absolute inset-0 rounded-2xl pointer-events-none opacity-[0.06] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:12px_12px]" 
+          className="absolute inset-0 rounded-3xl pointer-events-none opacity-[0.04] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:10px_10px]" 
           aria-hidden="true"
         />
 
-        {/* Card Top Header */}
-        <div className="relative flex justify-between items-start gap-4 pb-3 border-b-2 border-black/15">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-amber-300 text-[11px] font-black uppercase tracking-wider shadow-sm">
-            <MessageSquare className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-            <span>Anonymous Secret</span>
+        {/* Card Header */}
+        <div className="relative flex justify-between items-center pb-4 border-b-2 border-black/15">
+          <div className="flex items-center gap-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-[#eaf4fa] text-xs font-black uppercase tracking-wider shadow-sm">
+              <MessageSquare className="w-3.5 h-3.5 text-cyan-300 fill-cyan-300" />
+              <span>Secret #{index + 1}</span>
+            </div>
+            {total > 1 && (
+              <span className="text-[11px] font-bold text-black/60 uppercase tracking-widest">
+                Card {index + 1} of {total}
+              </span>
+            )}
           </div>
 
           {/* Delete Dialog */}
@@ -86,7 +95,7 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-black/70 hover:text-red-700 hover:bg-black/10 rounded-xl transition"
+                className="h-8 w-8 text-black/70 hover:text-red-700 hover:bg-black/10 rounded-xl transition cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
@@ -116,21 +125,21 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
         </div>
 
         {/* Secret Message Body */}
-        <div className="relative my-4 min-h-[50px] flex items-center">
-          <p className="text-lg md:text-xl font-extrabold text-black leading-snug break-words tracking-tight font-sans">
+        <div className="relative my-6 min-h-[90px] flex items-center">
+          <p className="text-xl md:text-2xl font-black text-black leading-snug break-words tracking-tight font-serif italic">
             "{message.content}"
           </p>
         </div>
 
         {/* Card Footer: Timestamp & Sparkle */}
-        <div className="relative pt-3 border-t-2 border-black/15 flex items-center justify-between text-xs font-bold text-black/70">
+        <div className="relative pt-4 border-t-2 border-black/15 flex items-center justify-between text-xs font-extrabold text-black/70">
           <div className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-black/60" />
             <span>{dayjs(message.createdAt).format('MMM D, YYYY • h:mm A')}</span>
           </div>
-          <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-black/50">
-            <Sparkles className="w-3 h-3 text-black/60" />
-            <span>Delivered</span>
+          <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-cyan-900">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-700 animate-pulse" />
+            <span>Verified Anonymous</span>
           </div>
         </div>
 

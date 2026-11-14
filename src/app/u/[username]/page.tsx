@@ -113,7 +113,7 @@ export default function SendMessage() {
       <Navbar />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-10 space-y-8 relative z-10">
-        
+
         {/* Profile Card Header */}
         <div className="text-center space-y-3 pt-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#141419]/90 border border-amber-500/30 text-amber-300 text-xs font-bold shadow-xl backdrop-blur-md">
@@ -207,7 +207,7 @@ export default function SendMessage() {
               ) : (
                 <Sparkles className="h-3.5 w-3.5 mr-1.5" />
               )}
-              Suggest New Questions
+              Suggest New Questions ??
             </Button>
           </div>
 

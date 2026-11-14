@@ -9,7 +9,7 @@ import { Message } from '@/model/User';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
-import { Loader2, RefreshCcw, Copy, Check, Link as LinkIcon, Inbox } from 'lucide-react';
+import { Loader2, RefreshCcw, Copy, Check, Link as LinkIcon, Inbox, ChevronUp, ChevronDown } from 'lucide-react';
 import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -19,6 +19,7 @@ import TornPaperBackground from '@/components/TornPaperBackground';
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -26,9 +27,13 @@ function UserDashboard() {
   const { toast } = useToast();
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages((prevMessages) =>
-      prevMessages.filter((message) => message._id.toString() !== messageId)
-    );
+    setMessages((prevMessages) => {
+      const updated = prevMessages.filter((message) => message._id.toString() !== messageId);
+      if (activeCardIndex >= updated.length && updated.length > 0) {
+        setActiveCardIndex(updated.length - 1);
+      }
+      return updated;
+    });
   };
 
   const { data: session } = useSession();
@@ -232,18 +237,71 @@ function UserDashboard() {
           </Button>
         </div>
 
-        {/* Messages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Messages 3D Interactive Stack Deck (One Deck at a time with Wheel / Button Scroll) */}
+        <div className="pt-2">
           {messages.length > 0 ? (
-            messages.map((message) => (
-              <MessageCard
-                key={message._id.toString()}
-                message={message}
-                onMessageDelete={handleDeleteMessage}
-              />
-            ))
+            <div className="space-y-6">
+              {/* Stack Controls & Navigation Pill */}
+              <div className="flex items-center justify-between px-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-neutral-400">Card Deck:</span>
+                  <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-black">
+                    {activeCardIndex + 1} / {messages.length}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={activeCardIndex === 0}
+                    onClick={() => setActiveCardIndex((prev) => Math.max(0, prev - 1))}
+                    className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
+                  >
+                    <ChevronUp className="w-4 h-4 mr-1" />
+                    Previous
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={activeCardIndex >= messages.length - 1}
+                    onClick={() => setActiveCardIndex((prev) => Math.min(messages.length - 1, prev + 1))}
+                    className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
+                  >
+                    Next
+                    <ChevronDown className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Interactive 3D Stack Stage */}
+              <div 
+                onWheel={(e) => {
+                  if (e.deltaY > 25 && activeCardIndex < messages.length - 1) {
+                    setActiveCardIndex((prev) => Math.min(messages.length - 1, prev + 1));
+                  } else if (e.deltaY < -25 && activeCardIndex > 0) {
+                    setActiveCardIndex((prev) => Math.max(0, prev - 1));
+                  }
+                }}
+                className="relative py-6 min-h-[300px] flex items-center justify-center cursor-ns-resize"
+              >
+                <MessageCard
+                  key={messages[activeCardIndex]._id.toString()}
+                  message={messages[activeCardIndex]}
+                  index={activeCardIndex}
+                  total={messages.length}
+                  onMessageDelete={handleDeleteMessage}
+                />
+              </div>
+
+              {/* Scroll / Swipe Tip */}
+              <p className="text-center text-[11px] font-bold text-neutral-400 uppercase tracking-widest">
+                💡 Tip: Use mouse wheel, trackpad scroll, or Previous / Next to shuffle cards
+              </p>
+            </div>
           ) : (
-            <div className="col-span-full py-16 px-4 rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-3 shadow-xl">
+            <div className="py-16 px-4 rounded-3xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-3 shadow-xl">
               <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-amber-400">
                 <Inbox className="w-6 h-6" />
               </div>
