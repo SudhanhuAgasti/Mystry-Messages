@@ -58,14 +58,6 @@ export default function Home() {
     paperAudio.resumeContext();
     paperAudio.playTearGrain(1.6);
     setAudioActivated(true);
-
-    // Smoothly scroll down slightly to begin the tearing physics
-    if (typeof window !== 'undefined') {
-      window.scrollBy({
-        top: window.innerHeight * 0.45,
-        behavior: 'smooth',
-      });
-    }
   };
 
   // Compute exact drop physics proportional to paper tear progress (0 to 1)
@@ -111,31 +103,38 @@ export default function Home() {
         {/* 3D Paper Tearing Canvas Overlay with Tearing Sound */}
         <PaperTearScrollScene containerRef={pinSectionRef} />
 
-        {/* Floating Stylish Interactive "Click to Tear the Paper" Action Button */}
-        {scrollProgress < 0.85 && (
-          <div
-            className={`absolute top-20 sm:top-24 z-30 transition-all duration-500 transform ${
-              audioActivated ? 'opacity-80 scale-95' : 'opacity-100 scale-100 hover:scale-105'
-            }`}
-          >
-            <button
-              onClick={handleActivateAndTear}
-              type="button"
-              className="group relative inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full text-xs sm:text-sm font-extrabold tracking-wide uppercase text-black bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_30px_rgba(251,191,36,0.65)] hover:shadow-[0_0_40px_rgba(251,191,36,0.9)] border border-amber-200/50 transition-all duration-300 active:scale-95 cursor-pointer backdrop-blur-md"
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-black"></span>
-              </span>
-              <Volume2 className="w-4 h-4 text-black group-hover:rotate-12 transition-transform" />
-              <span>Click to Tear the Paper</span>
-              <Sparkles className="w-3.5 h-3.5 text-black animate-pulse" />
-            </button>
+        {/* Center Floating Interactive Audio Activator & Scroll Direction Prompt */}
+        {scrollProgress < 0.75 && (
+          <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+            {!audioActivated ? (
+              <div className="pointer-events-auto transition-all duration-300 transform hover:scale-105 active:scale-95">
+                <button
+                  onClick={handleActivateAndTear}
+                  type="button"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full text-sm sm:text-base font-extrabold tracking-wider uppercase text-black bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 shadow-[0_0_40px_rgba(251,191,36,0.7)] hover:shadow-[0_0_60px_rgba(251,191,36,0.95)] border-2 border-amber-200 transition-all duration-300 cursor-pointer backdrop-blur-md"
+                >
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
+                  </span>
+                  <Volume2 className="w-5 h-5 text-black group-hover:rotate-12 transition-transform" />
+                  <span>Click Me to Enter Mystry World</span>
+                  <Sparkles className="w-4 h-4 text-black animate-pulse" />
+                </button>
+              </div>
+            ) : (
+              <div className="pointer-events-auto animate-bounce flex flex-col items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-black/80 border border-amber-400/60 shadow-[0_0_30px_rgba(251,191,36,0.5)] backdrop-blur-md">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-widest text-amber-300">
+                  <span>Scroll Now to Tear</span>
+                  <ChevronDown className="w-4 h-4 text-amber-400 animate-pulse" />
+                </div>
+              </div>
+            )}
           </div>
         )}
 
         {/* Website Content Revealed from Behind the Tearing Golden Paper */}
-        <div className="relative z-0 max-w-4xl mx-auto px-4 md:px-12 text-center space-y-6 pt-16 md:pt-14">
+        <div className="relative z-0 max-w-4xl mx-auto px-4 md:px-12 text-center space-y-6 pt-12">
           
           {/* Royal Pill Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-[#141418]/90 text-amber-300 border border-amber-500/30 shadow-2xl backdrop-blur-md">
