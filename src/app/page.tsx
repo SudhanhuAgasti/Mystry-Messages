@@ -132,8 +132,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#070709] text-neutral-100 font-sans selection:bg-amber-400 selection:text-black relative overflow-x-hidden">
-      {/* Constant Fixed Luxury Navbar */}
-      <Navbar />
+      {/* Constant Luxury Navbar - Appears dynamically only after user tears paper or unlocks */}
+      <div
+        className={`transition-all duration-700 ease-out z-20 ${
+          scrollProgress > 0.1 || audioActivated
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-full pointer-events-none'
+        }`}
+      >
+        <Navbar />
+      </div>
 
       {/* =========================================================================
           PINNED HERO SECTION: REALISTIC 3D PAPER TEAR SCROLL REVEAL (THREE.JS + GSAP)
