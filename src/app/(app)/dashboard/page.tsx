@@ -49,6 +49,25 @@ function UserDashboard() {
     }
   }, [activeCardIndex, messages.length, isSwiping]);
 
+  // Auto-scroll every 10 seconds if user is idle and messages exist
+  useEffect(() => {
+    if (messages.length <= 1) return;
+
+    const timer = setInterval(() => {
+      if (isSwiping) return;
+      setActiveCardIndex((prevIndex) => {
+        setSwipeDirection('next');
+        setIsSwiping(true);
+        setTimeout(() => {
+          setIsSwiping(false);
+        }, 320);
+        return (prevIndex + 1) % messages.length;
+      });
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, [messages.length, activeCardIndex, isSwiping]);
+
   const handleDeleteMessage = (messageId: string) => {
     setMessages((prevMessages) => {
       const updated = prevMessages.filter((message) => message._id.toString() !== messageId);
@@ -263,16 +282,18 @@ function UserDashboard() {
           </Button>
         </div>
 
-        {/* Messages 3D Interactive Stack Deck (One Deck at a time with Wheel / Button Scroll) */}
+        {/* Messages Single Card Presentation with Swipe / Auto-Scroll */}
         <div className="pt-2">
           {messages.length > 0 ? (
             <div className="space-y-6">
               {/* Stack Controls & Navigation Pill */}
               <div className="flex items-center justify-between px-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-neutral-400">Card Deck:</span>
                   <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-black">
-                    {activeCardIndex + 1} / {messages.length}
+                    Message {activeCardIndex + 1} of {messages.length}
+                  </span>
+                  <span className="hidden sm:inline-block text-[11px] text-neutral-400 font-medium">
+                    (Auto-slides every 10s)
                   </span>
                 </div>
 
