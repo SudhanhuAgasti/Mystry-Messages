@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import axios, { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Loader2, Send, Crown, CheckCircle2, Sparkles, ShieldCheck, HeartHandshake, ArrowRight, MessageSquareQuote } from 'lucide-react';
+import { Loader2, Send, Crown, CheckCircle2, Lightbulb, ShieldCheck, HeartHandshake, ArrowRight, MessageSquareQuote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -140,10 +140,10 @@ export default function SendMessage() {
 
         {/* Main Side-by-Side Content Grid for Desktop/iPad, Stacked on Mobile */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 items-stretch flex-1 min-h-0 my-2 sm:my-3">
-          
+
           {/* Left Column: Interactive Luxury Message Form (7 cols on Desktop) */}
           <section className="md:col-span-7 flex flex-col justify-between rounded-2xl bg-gradient-to-b from-[#131318]/90 to-[#0c0c10]/95 backdrop-blur-md text-white p-4 sm:p-6 shadow-2xl border border-amber-500/30 relative overflow-hidden group">
-            
+
             {/* Top Bar inside Message Box */}
             <div className="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
               <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-400">
@@ -209,12 +209,12 @@ export default function SendMessage() {
 
           {/* Right Column: AI Suggestions & Quick Prompts (5 cols on Desktop) */}
           <section className="md:col-span-5 flex flex-col justify-between rounded-2xl bg-gradient-to-b from-[#131318]/90 to-[#0c0c10]/95 backdrop-blur-md text-white p-4 sm:p-5 shadow-2xl border border-amber-500/25 relative overflow-hidden">
-            
+
             {/* Suggestion Section Header */}
             <div className="flex items-center justify-between pb-2 border-b border-white/10 shrink-0">
               <div>
                 <h2 className="text-xs sm:text-sm font-black text-amber-400 flex items-center gap-1.5 uppercase tracking-wide">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
                   Need Inspiration?
                 </h2>
                 <p className="text-[11px] text-neutral-400">Click a prompt to load into text box</p>
@@ -224,12 +224,12 @@ export default function SendMessage() {
                 onClick={fetchSuggestedMessages}
                 disabled={isSuggestLoading}
                 size="sm"
-                className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black text-[11px] font-black rounded-lg h-7 px-2.5 border-0 shadow transition hover:scale-105 shrink-0"
+                className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black text-[11px] font-black rounded-lg h-7 px-2.5 border-0 shadow transition hover:scale-105 shrink-0 cursor-pointer"
               >
                 {isSuggestLoading ? (
                   <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                 ) : (
-                  <Sparkles className="h-3 w-3 mr-1" />
+                  <Lightbulb className="h-3 w-3 mr-1 fill-amber-400" />
                 )}
                 New
               </Button>
