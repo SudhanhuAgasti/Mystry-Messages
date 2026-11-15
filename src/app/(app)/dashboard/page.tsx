@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageCard } from '@/components/MessageCard';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -15,8 +15,24 @@ import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
-import TornPaperBackground from '@/components/TornPaperBackground';
 import Navbar from '@/components/Navbar';
+
+// Production Dynamic Lazy Loading for Background & Message Card
+const TornPaperBackground = dynamic(() => import('@/components/TornPaperBackground'), {
+  ssr: false,
+});
+
+const MessageCard = dynamic(
+  () => import('@/components/MessageCard').then((mod) => mod.MessageCard),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full max-w-[310px] h-[370px] rounded-[22px] bg-[#bbdefb]/20 border-2 border-black/30 flex items-center justify-center animate-pulse mx-auto">
+        <Loader2 className="w-6 h-6 animate-spin text-amber-400" />
+      </div>
+    ),
+  }
+);
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);

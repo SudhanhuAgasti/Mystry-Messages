@@ -19,8 +19,12 @@ import { toast } from 'sonner';
 import { signInSchema } from '@/schemas/signInSchema';
 import { Crown, ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
-import TornPaperBackground from '@/components/TornPaperBackground';
+
+const TornPaperBackground = dynamic(() => import('@/components/TornPaperBackground'), {
+  ssr: false,
+});
 
 export default function SignInForm() {
     const router = useRouter();

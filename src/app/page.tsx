@@ -1,14 +1,24 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
-import PaperTearScrollScene from '@/components/PaperTearScrollScene';
-import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown } from 'lucide-react';
+import { Crown, Lock, Shield, MessageSquare, ArrowRight, EyeOff, ChevronDown, Loader2 } from 'lucide-react';
 import { paperAudio } from '@/lib/paperAudio';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Lazy load the 3D Three.js canvas component for production performance
+const PaperTearScrollScene = dynamic(() => import('@/components/PaperTearScrollScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 bg-[#e8a317] flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-black/40" />
+    </div>
+  ),
+});
 
 gsap.registerPlugin(ScrollTrigger);
 

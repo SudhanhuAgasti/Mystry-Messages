@@ -37,7 +37,11 @@ import axios, { AxiosError } from 'axios';
 
 // Icons
 import { Loader2, Crown, ArrowRight, X } from 'lucide-react';
-import TornPaperBackground from '@/components/TornPaperBackground';
+import dynamic from 'next/dynamic';
+
+const TornPaperBackground = dynamic(() => import('@/components/TornPaperBackground'), {
+  ssr: false,
+});
 
 // Validation Schema
 import { signUpSchema } from '@/schemas/signUpSchema';

@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import axios, { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Loader2, Send, Sparkles, Crown, CheckCircle2 } from 'lucide-react';
+import { Loader2, Send, Crown, CheckCircle2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -22,7 +23,11 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { messageSchema } from '@/schemas/messageSchema';
 import Navbar from '@/components/Navbar';
-import TornPaperBackground from '@/components/TornPaperBackground';
+
+// Production lazy loading for heavy canvas background
+const TornPaperBackground = dynamic(() => import('@/components/TornPaperBackground'), {
+  ssr: false,
+});
 
 const specialChar = '||';
 
