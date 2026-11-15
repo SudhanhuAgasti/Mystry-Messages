@@ -54,12 +54,12 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
     // Vertical Playing Card Outer Frame
     <div className="relative w-full max-w-[300px] sm:max-w-[320px] md:max-w-[310px] lg:max-w-[320px] mx-auto select-none my-1">
       
-      {/* Main Playing Card: Clean Vertical Shape with Creamy Ice Blue & Solid Black Border */}
-      <div className="relative z-10 w-full h-[380px] sm:h-[400px] md:h-[350px] lg:h-[370px] rounded-[22px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[2.5px] border-black p-4 sm:p-4.5 shadow-[0_12px_32px_rgba(0,0,0,0.8)] flex flex-col justify-between overflow-hidden">
+      {/* Main Playing Card: Rich Creamy Blue with Solid Black Border */}
+      <div className="relative z-10 w-full h-[380px] sm:h-[400px] md:h-[350px] lg:h-[370px] rounded-[22px] bg-gradient-to-b from-[#e3f2fd] via-[#bbdefb] to-[#90caf9] border-[2.5px] border-black p-4 sm:p-4.5 shadow-[0_12px_32px_rgba(0,0,0,0.8)] flex flex-col justify-between overflow-hidden">
         
         {/* Lined Notebook / Stationery Message Paper Texture Background */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.22] bg-[linear-gradient(to_bottom,transparent_27px,rgba(0,0,0,0.12)_28px)] [background-size:100%_28px]" 
+          className="absolute inset-0 pointer-events-none opacity-[0.25] bg-[linear-gradient(to_bottom,transparent_27px,rgba(0,0,0,0.12)_28px)] [background-size:100%_28px]" 
           aria-hidden="true" 
         />
 

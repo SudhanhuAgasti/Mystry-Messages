@@ -115,7 +115,12 @@ function UserDashboard() {
       setIsSwitchLoading(false);
       try {
         const response = await axios.get<ApiResponse>('/api/get-messages');
-        setMessages(response.data.messages || []);
+        const fetchedMessages = response.data.messages || [];
+        setMessages(fetchedMessages);
+        setActiveCardIndex((prev) => {
+          if (fetchedMessages.length === 0) return 0;
+          return prev >= fetchedMessages.length ? 0 : prev;
+        });
         if (refresh) {
           toast({
             title: 'Messages Refreshed',
@@ -284,7 +289,7 @@ function UserDashboard() {
 
         {/* Messages Presentation Stage (Fit in Viewport) */}
         <main className="flex-1 min-h-0 flex flex-col justify-center">
-          {messages.length > 0 ? (
+          {messages.length > 0 && messages[activeCardIndex] ? (
             <div className="flex flex-col h-full justify-between py-1">
               {/* Card Navigation Controls */}
               <div className="flex items-center justify-between px-2 shrink-0">
@@ -358,7 +363,7 @@ function UserDashboard() {
                   }`}
                 >
                   <MessageCard
-                    key={messages[activeCardIndex]._id.toString()}
+                    key={messages[activeCardIndex]._id?.toString() || `msg-${activeCardIndex}`}
                     message={messages[activeCardIndex]}
                     index={activeCardIndex}
                     total={messages.length}
