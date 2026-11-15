@@ -3,7 +3,7 @@
 import React from 'react';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { Trash2, Clock, Sparkles } from 'lucide-react';
+import { Trash2, Clock, Sparkles, MessageSquareQuote } from 'lucide-react';
 import { Message } from '@/model/User';
 import {
   AlertDialog,
@@ -55,18 +55,32 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
     <div className="relative w-full max-w-[320px] sm:max-w-[350px] mx-auto select-none my-2">
       
       {/* Main Playing Card: Clean Vertical Shape with Creamy Ice Blue & Solid Black Border */}
-      <div className="relative z-10 w-full min-h-[480px] sm:min-h-[510px] rounded-[26px] bg-gradient-to-b from-[#f2f8fc] via-[#dcedf7] to-[#c5dfef] border-[3px] border-black p-5 sm:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
+      <div className="relative z-10 w-full min-h-[480px] sm:min-h-[510px] rounded-[26px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[3px] border-black p-5 sm:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
         
-        {/* Playing Card Inner Framed Inset Border */}
+        {/* Lined Notebook / Stationery Message Paper Texture Background */}
         <div 
-          className="absolute inset-2.5 rounded-[18px] border border-black/20 pointer-events-none" 
+          className="absolute inset-0 pointer-events-none opacity-[0.22] bg-[linear-gradient(to_bottom,transparent_27px,rgba(0,0,0,0.12)_28px)] [background-size:100%_28px]" 
           aria-hidden="true" 
         />
 
-        {/* Vintage Paper Texture / Subtle Micro-Pattern */}
+        {/* Vintage Paper Fiber Noise Texture */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.035] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:12px_12px]" 
+          className="absolute inset-0 pointer-events-none opacity-[0.035] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:10px_10px]" 
           aria-hidden="true"
+        />
+
+        {/* Subtle Faint Message / Letter Stamp Watermark in Center Background */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05] select-none text-black"
+          aria-hidden="true"
+        >
+          <MessageSquareQuote className="w-52 h-52 stroke-[1.2]" />
+        </div>
+
+        {/* Elegant Inset Border Line for Stationery Note Feel */}
+        <div 
+          className="absolute inset-2.5 rounded-[18px] border border-black/15 pointer-events-none" 
+          aria-hidden="true" 
         />
 
         {/* --- CARD TOP SECTION --- */}
