@@ -134,12 +134,12 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
         </div>
 
         {/* --- CARD CENTER SECTION: The Secret Anonymous Message --- */}
-        <div className="relative z-10 my-auto py-6 px-2 flex flex-col items-center justify-center text-center">
-          <div className="w-8 h-0.5 bg-black/25 mb-4 rounded-full" />
-          <p className="text-lg sm:text-xl font-bold text-black leading-relaxed break-words tracking-tight font-serif italic max-h-[240px] overflow-y-auto pr-1">
-            "{message.content}"
+        <div className="relative z-10 my-auto py-4 sm:py-6 px-3 flex flex-col items-center justify-center text-center">
+          <div className="w-10 h-0.5 bg-black/30 mb-3 sm:mb-4 rounded-full" />
+          <p className="text-xl sm:text-2xl md:text-[23px] font-black text-black leading-snug sm:leading-relaxed break-words tracking-tight font-sans max-h-[220px] overflow-y-auto px-1 select-text">
+            &ldquo;{message.content}&rdquo;
           </p>
-          <div className="w-8 h-0.5 bg-black/25 mt-4 rounded-full" />
+          <div className="w-10 h-0.5 bg-black/30 mt-3 sm:mt-4 rounded-full" />
         </div>
 
         {/* --- CARD BOTTOM SECTION --- */}
