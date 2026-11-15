@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import TornPaperBackground from '@/components/TornPaperBackground';
+import Navbar from '@/components/Navbar';
 
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -169,6 +170,9 @@ function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-[#0b0b0e] text-neutral-100 pt-24 pb-10 px-4 sm:px-6 lg:px-8 relative selection:bg-amber-400 selection:text-black">
+      {/* Constant Top Navbar on Dashboard */}
+      <Navbar className="!z-50" />
+
       {/* Torn Paper Realistic Background */}
       <TornPaperBackground />
 
