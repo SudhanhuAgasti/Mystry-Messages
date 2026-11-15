@@ -189,77 +189,77 @@ function UserDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0b0e] text-neutral-100 pt-24 pb-10 px-4 sm:px-6 lg:px-8 relative selection:bg-amber-400 selection:text-black">
+    <div className="h-screen max-h-screen bg-[#0b0b0e] text-neutral-100 pt-16 pb-2 px-3 sm:px-6 relative selection:bg-amber-400 selection:text-black flex flex-col overflow-hidden">
       {/* Constant Top Navbar on Dashboard */}
       <Navbar className="!z-50" />
 
       {/* Torn Paper Realistic Background */}
       <TornPaperBackground />
 
-      <div className="max-w-5xl mx-auto space-y-8 relative z-10">
+      <div className="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-between py-2 sm:py-3 relative z-10 min-h-0">
         
-        {/* Title & Top Greeting */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-amber-500/20">
+        {/* Compact Header: Title + Status Switch in One Line */}
+        <header className="flex items-center justify-between gap-2 pb-2 border-b border-amber-500/20 shrink-0">
           <div>
-            <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white font-serif drop-shadow-md">
-              User Dashboard
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white font-serif drop-shadow-md">
+              Dashboard
             </h1>
-            <p className="text-sm text-neutral-300 font-medium mt-1">
+            <p className="text-[11px] sm:text-xs text-neutral-400 font-medium hidden sm:block">
               Manage your anonymous feedback and personal link.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto bg-[#141419]/90 backdrop-blur-md text-amber-300 px-4 py-2.5 rounded-2xl shadow-xl border border-amber-500/30">
-            <span className="text-xs uppercase tracking-wider font-extrabold text-neutral-400">Status:</span>
+          <div className="flex items-center gap-2 bg-[#141419]/90 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-lg border border-amber-500/30 shrink-0">
+            <span className="text-[10px] uppercase tracking-wider font-extrabold text-neutral-400">
+              Status:
+            </span>
             <Switch
               {...register('acceptMessages')}
               checked={!!acceptMessages}
               onCheckedChange={handleSwitchChange}
               disabled={isSwitchLoading}
+              className="scale-90"
             />
-            <span className={`text-xs font-black ${acceptMessages ? 'text-amber-400' : 'text-neutral-500'}`}>
+            <span className={`text-[11px] font-black ${acceptMessages ? 'text-amber-400' : 'text-neutral-500'}`}>
               {acceptMessages ? 'ACCEPTING' : 'MUTED'}
             </span>
           </div>
-        </div>
+        </header>
 
-        {/* Share Link Card */}
-        <div className="rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white p-6 md:p-8 shadow-2xl space-y-3 border border-amber-500/30">
-          <div className="flex items-center gap-2 text-sm font-bold text-amber-400">
-            <LinkIcon className="w-4 h-4" />
-            <span>Your Anonymous Link</span>
-          </div>
-          <p className="text-xs text-neutral-300">
-            Share this link on your Instagram bio, WhatsApp, or Twitter to receive anonymous messages.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-            <div className="flex-1 bg-black/80 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-amber-300 font-mono select-all overflow-hidden text-ellipsis">
+        {/* Compact Share Link Bar */}
+        <section className="rounded-xl bg-[#0f0f14]/85 backdrop-blur-md text-white p-2.5 sm:p-3 shadow-lg border border-amber-500/25 shrink-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-amber-400 shrink-0">
+              <LinkIcon className="w-3.5 h-3.5" />
+              <span>Secret Link:</span>
+            </div>
+            <div className="flex-1 bg-black/80 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 font-mono select-all truncate">
               {profileUrl}
             </div>
             <Button
               onClick={copyToClipboard}
-              className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-black shadow-lg px-7 py-3 rounded-xl border-0 transition"
+              size="sm"
+              className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-black shadow px-4 py-1.5 h-8 text-xs rounded-lg border-0 transition shrink-0"
             >
               {copied ? (
                 <>
-                  <Check className="w-4 h-4 mr-2" />
+                  <Check className="w-3.5 h-3.5 mr-1" />
                   Copied
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy Link
+                  <Copy className="w-3.5 h-3.5 mr-1" />
+                  Copy
                 </>
               )}
             </Button>
           </div>
-        </div>
+        </section>
 
-        {/* Messages Section Header */}
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2 text-xl font-black text-white">
-            <Inbox className="w-5 h-5 text-amber-400" />
+        {/* Messages Header Bar */}
+        <div className="flex items-center justify-between shrink-0 pt-0.5 px-1">
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-black text-white">
+            <Inbox className="w-4 h-4 text-amber-400" />
             <span>Received Messages ({messages.length})</span>
           </div>
 
@@ -269,44 +269,44 @@ function UserDashboard() {
               e.preventDefault();
               fetchMessages(true);
             }}
-            className="bg-[#141419]/90 hover:bg-black text-amber-400 border border-amber-500/30 font-bold text-xs rounded-xl px-4 py-2 shadow-md transition"
+            className="h-7 bg-[#141419]/90 hover:bg-black text-amber-400 border border-amber-500/30 font-bold text-[11px] rounded-lg px-2.5 py-1 shadow-sm transition"
           >
             {isLoading ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-400" />
+              <Loader2 className="h-3 w-3 animate-spin text-amber-400" />
             ) : (
               <>
-                <RefreshCcw className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
+                <RefreshCcw className="h-3 w-3 mr-1 text-amber-400" />
                 Refresh
               </>
             )}
           </Button>
         </div>
 
-        {/* Messages Single Card Presentation with Swipe / Auto-Scroll */}
-        <div className="pt-2">
+        {/* Messages Presentation Stage (Fit in Viewport) */}
+        <main className="flex-1 min-h-0 flex flex-col justify-center">
           {messages.length > 0 ? (
-            <div className="space-y-6">
-              {/* Stack Controls & Navigation Pill */}
-              <div className="flex items-center justify-between px-2">
+            <div className="flex flex-col h-full justify-between py-1">
+              {/* Card Navigation Controls */}
+              <div className="flex items-center justify-between px-2 shrink-0">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-black">
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-[11px] font-black">
                     Message {activeCardIndex + 1} of {messages.length}
                   </span>
-                  <span className="hidden sm:inline-block text-[11px] text-neutral-400 font-medium">
-                    (Auto-slides every 10s)
+                  <span className="hidden sm:inline-block text-[10px] text-neutral-400 font-medium">
+                    (Auto-slides 10s)
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <Button
                     size="sm"
                     variant="outline"
                     disabled={activeCardIndex === 0 || isSwiping}
                     onClick={() => handleSwipe('prev')}
-                    className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
+                    className="h-7 px-2.5 text-xs rounded-lg border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
                   >
-                    <ChevronUp className="w-4 h-4 mr-1" />
-                    Previous
+                    <ChevronUp className="w-3.5 h-3.5 mr-0.5" />
+                    Prev
                   </Button>
 
                   <Button
@@ -314,15 +314,15 @@ function UserDashboard() {
                     variant="outline"
                     disabled={activeCardIndex >= messages.length - 1 || isSwiping}
                     onClick={() => handleSwipe('next')}
-                    className="h-8 px-3 rounded-xl border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
+                    className="h-7 px-2.5 text-xs rounded-lg border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
                   >
                     Next
-                    <ChevronDown className="w-4 h-4 ml-1" />
+                    <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
                   </Button>
                 </div>
               </div>
 
-              {/* Interactive 3D Stack Stage with Smooth Physical Swipe Animation & Mobile Touch Support */}
+              {/* Interactive 3D Card Stage with Mobile Touch & Wheel Support */}
               <div 
                 onTouchStart={(e) => {
                   setTouchStartY(e.touches[0].clientY);
@@ -332,10 +332,8 @@ function UserDashboard() {
                   const touchEndY = e.changedTouches[0].clientY;
                   const deltaY = touchStartY - touchEndY;
                   if (deltaY > 40 && activeCardIndex < messages.length - 1) {
-                    // Swiped up -> Next card
                     handleSwipe('next');
                   } else if (deltaY < -40 && activeCardIndex > 0) {
-                    // Swiped down -> Previous card
                     handleSwipe('prev');
                   }
                   setTouchStartY(null);
@@ -348,14 +346,14 @@ function UserDashboard() {
                     handleSwipe('prev');
                   }
                 }}
-                className="relative py-4 sm:py-8 min-h-[520px] sm:min-h-[560px] flex items-center justify-center overflow-hidden cursor-ns-resize touch-pan-x"
+                className="flex-1 min-h-0 flex items-center justify-center overflow-hidden cursor-ns-resize touch-pan-x py-1"
               >
                 <div
                   className={`w-full transition-all duration-300 ease-out transform ${
                     isSwiping
                       ? swipeDirection === 'next'
-                        ? '-translate-y-28 rotate-[-9deg] opacity-0 scale-90'
-                        : 'translate-y-28 rotate-[9deg] opacity-0 scale-90'
+                        ? '-translate-y-20 rotate-[-8deg] opacity-0 scale-90'
+                        : 'translate-y-20 rotate-[8deg] opacity-0 scale-90'
                       : 'translate-y-0 rotate-0 opacity-100 scale-100'
                   }`}
                 >
@@ -370,22 +368,22 @@ function UserDashboard() {
               </div>
 
               {/* Scroll / Swipe Tip */}
-              <p className="text-center text-[11px] font-bold text-neutral-400 uppercase tracking-widest px-4">
-                💡 Swipe up/down on phone or scroll mouse wheel to flip through playing cards
+              <p className="text-center text-[10px] font-bold text-neutral-400 uppercase tracking-widest px-2 shrink-0">
+                💡 Swipe up/down on phone or scroll mouse wheel (10s auto-flip)
               </p>
             </div>
           ) : (
-            <div className="py-16 px-4 rounded-3xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-3 shadow-xl">
-              <div className="w-12 h-12 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-amber-400">
-                <Inbox className="w-6 h-6" />
+            <div className="my-auto py-8 sm:py-12 px-4 rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-2 shadow-xl">
+              <div className="w-10 h-10 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-amber-400">
+                <Inbox className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-amber-400">No messages yet</h3>
-              <p className="text-xs text-neutral-300 max-w-sm mx-auto">
+              <h3 className="text-sm font-bold text-amber-400">No messages yet</h3>
+              <p className="text-xs text-neutral-300 max-w-xs mx-auto">
                 Share your unique link with friends to start getting secret feedback and confessions.
               </p>
             </div>
           )}
-        </div>
+        </main>
 
       </div>
     </div>

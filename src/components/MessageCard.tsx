@@ -52,10 +52,10 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
 
   return (
     // Vertical Playing Card Outer Frame
-    <div className="relative w-full max-w-[320px] sm:max-w-[350px] mx-auto select-none my-2">
+    <div className="relative w-full max-w-[320px] sm:max-w-[340px] md:max-w-[360px] mx-auto select-none my-1">
       
       {/* Main Playing Card: Clean Vertical Shape with Creamy Ice Blue & Solid Black Border */}
-      <div className="relative z-10 w-full min-h-[480px] sm:min-h-[510px] rounded-[26px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[3px] border-black p-5 sm:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
+      <div className="relative z-10 w-full h-[400px] sm:h-[430px] md:h-[450px] rounded-[24px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[3px] border-black p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
         
         {/* Lined Notebook / Stationery Message Paper Texture Background */}
         <div 
