@@ -26,6 +26,7 @@ function UserDashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
 
   const { toast } = useToast();
 
@@ -300,8 +301,24 @@ function UserDashboard() {
                 </div>
               </div>
 
-              {/* Interactive 3D Stack Stage with Smooth Physical Swipe Animation */}
+              {/* Interactive 3D Stack Stage with Smooth Physical Swipe Animation & Mobile Touch Support */}
               <div 
+                onTouchStart={(e) => {
+                  setTouchStartY(e.touches[0].clientY);
+                }}
+                onTouchEnd={(e) => {
+                  if (touchStartY === null || isSwiping) return;
+                  const touchEndY = e.changedTouches[0].clientY;
+                  const deltaY = touchStartY - touchEndY;
+                  if (deltaY > 40 && activeCardIndex < messages.length - 1) {
+                    // Swiped up -> Next card
+                    handleSwipe('next');
+                  } else if (deltaY < -40 && activeCardIndex > 0) {
+                    // Swiped down -> Previous card
+                    handleSwipe('prev');
+                  }
+                  setTouchStartY(null);
+                }}
                 onWheel={(e) => {
                   if (isSwiping) return;
                   if (e.deltaY > 15 && activeCardIndex < messages.length - 1) {
@@ -310,14 +327,14 @@ function UserDashboard() {
                     handleSwipe('prev');
                   }
                 }}
-                className="relative py-8 min-h-[340px] flex items-center justify-center overflow-hidden cursor-ns-resize"
+                className="relative py-4 sm:py-8 min-h-[520px] sm:min-h-[560px] flex items-center justify-center overflow-hidden cursor-ns-resize touch-pan-x"
               >
                 <div
                   className={`w-full transition-all duration-300 ease-out transform ${
                     isSwiping
                       ? swipeDirection === 'next'
-                        ? '-translate-y-24 rotate-[-8deg] opacity-0 scale-90'
-                        : 'translate-y-24 rotate-[8deg] opacity-0 scale-90'
+                        ? '-translate-y-28 rotate-[-9deg] opacity-0 scale-90'
+                        : 'translate-y-28 rotate-[9deg] opacity-0 scale-90'
                       : 'translate-y-0 rotate-0 opacity-100 scale-100'
                   }`}
                 >
@@ -332,8 +349,8 @@ function UserDashboard() {
               </div>
 
               {/* Scroll / Swipe Tip */}
-              <p className="text-center text-[11px] font-bold text-neutral-400 uppercase tracking-widest">
-                💡 Scroll mouse wheel or swipe up/down to flip through cards with 3D effect
+              <p className="text-center text-[11px] font-bold text-neutral-400 uppercase tracking-widest px-4">
+                💡 Swipe up/down on phone or scroll mouse wheel to flip through playing cards
               </p>
             </div>
           ) : (

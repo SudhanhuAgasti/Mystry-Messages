@@ -3,7 +3,7 @@
 import React from 'react';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { Trash2, MessageSquare, Clock, Sparkles } from 'lucide-react';
+import { Trash2, Clock, Sparkles, Crown } from 'lucide-react';
 import { Message } from '@/model/User';
 import {
   AlertDialog,
@@ -27,8 +27,16 @@ type MessageCardProps = {
   total?: number;
 };
 
+// Map card indices to classic playing card ranks (A, 2, 3... 10, J, Q, K)
+const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+const SUITS = ['♠', '♥', '♦', '♣'];
+
 export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: MessageCardProps) {
   const { toast } = useToast();
+
+  const rank = RANKS[index % RANKS.length];
+  const suit = SUITS[index % SUITS.length];
+  const isRedSuit = suit === '♥' || suit === '♦';
 
   const handleDeleteConfirm = async () => {
     try {
@@ -51,56 +59,78 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
   };
 
   return (
-    // Outer Stack Container
-    <div className="relative w-full max-w-xl mx-auto select-none">
+    // Outer Playing Card Deck Container (Tall Vertical Playing Card Proportions)
+    <div className="relative w-full max-w-[320px] sm:max-w-[350px] mx-auto select-none my-2">
       
-      {/* Underlying Stack Layer 2 (Bottom-most subtle tilted card) */}
+      {/* Underlying Stack Layer 2 (Bottom-most tilted physical card) */}
       <div 
-        className="absolute inset-x-4 -bottom-3.5 h-14 rounded-3xl bg-[#98b6c8] border-2 border-black opacity-35 transform rotate-[-2.5deg] shadow-lg" 
+        className="absolute inset-0 rounded-[26px] bg-[#9cbacd] border-[2.5px] border-black opacity-45 transform rotate-[-3.5deg] translate-y-3.5 shadow-2xl pointer-events-none" 
         aria-hidden="true" 
       />
 
-      {/* Underlying Stack Layer 1 (Middle tilted card) */}
+      {/* Underlying Stack Layer 1 (Middle tilted physical card) */}
       <div 
-        className="absolute inset-x-2 -bottom-2 h-14 rounded-3xl bg-[#b7d0df] border-2 border-black opacity-70 transform rotate-[1.8deg] shadow-md" 
+        className="absolute inset-0 rounded-[26px] bg-[#bdd3e1] border-[2.5px] border-black opacity-75 transform rotate-[2.8deg] translate-y-2 shadow-xl pointer-events-none" 
         aria-hidden="true" 
       />
 
-      {/* Main Top Card: Elegant Creamy Ice Blue with Solid Black Border & Velvet Depth */}
-      <div className="relative z-10 rounded-3xl bg-gradient-to-br from-[#eaf4fa] via-[#d6e8f4] to-[#c2ddee] border-[2.5px] border-black p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-300">
+      {/* Main Top Playing Card: Vertical Tarot/Poker Proportions with Creamy Ice Blue & Solid Black Border */}
+      <div className="relative z-10 w-full min-h-[480px] sm:min-h-[510px] rounded-[26px] bg-gradient-to-b from-[#f2f8fc] via-[#dcedf7] to-[#c5dfef] border-[3px] border-black p-5 sm:p-6 shadow-[0_22px_50px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
         
-        {/* Subtle Frosted Paper Fiber Effect */}
+        {/* Playing Card Inner Framed Inset Border */}
         <div 
-          className="absolute inset-0 rounded-3xl pointer-events-none opacity-[0.04] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:10px_10px]" 
+          className="absolute inset-2.5 rounded-[18px] border border-black/20 pointer-events-none" 
+          aria-hidden="true" 
+        />
+
+        {/* Vintage Playing Card Texture / Subtle Micro-Pattern */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.035] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:12px_12px]" 
           aria-hidden="true"
         />
 
-        {/* Card Header */}
-        <div className="relative flex justify-between items-center pb-4 border-b-2 border-black/15">
-          <div className="flex items-center gap-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-[#eaf4fa] text-xs font-black uppercase tracking-wider shadow-sm">
-              <MessageSquare className="w-3.5 h-3.5 text-cyan-300 fill-cyan-300" />
-              <span>Secret #{index + 1}</span>
-            </div>
-            {total > 1 && (
-              <span className="text-[11px] font-bold text-black/60 uppercase tracking-widest">
-                Card {index + 1} of {total}
-              </span>
-            )}
+        {/* Watermark Crown / Playing Card Center Seal in background */}
+        <div 
+          className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.045] select-none text-black"
+          aria-hidden="true"
+        >
+          <Crown className="w-56 h-56 stroke-[1]" />
+        </div>
+
+        {/* --- CARD TOP SECTION --- */}
+        <div className="relative z-10 flex items-start justify-between">
+          {/* Top-Left Playing Card Index (Rank + Suit + Card Counter) */}
+          <div className="flex flex-col items-center leading-none select-none">
+            <span className="text-2xl sm:text-3xl font-black font-serif text-black tracking-tight">
+              {rank}
+            </span>
+            <span className={`text-xl sm:text-2xl font-bold leading-none ${isRedSuit ? 'text-red-700' : 'text-black'}`}>
+              {suit}
+            </span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-black/50 mt-1">
+              #{index + 1}
+            </span>
           </div>
 
-          {/* Delete Dialog */}
+          {/* Top Center: Deck Counter Pill */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black text-[#eaf4fa] text-[11px] font-black uppercase tracking-wider shadow-sm mt-0.5">
+            <Sparkles className="w-3 h-3 text-cyan-300 fill-cyan-300" />
+            <span>Card {index + 1} of {total}</span>
+          </div>
+
+          {/* Top-Right: Delete Action */}
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 text-black/70 hover:text-red-700 hover:bg-black/10 rounded-xl transition cursor-pointer"
+                title="Delete message"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="bg-[#121215] border border-[#2a2412] text-neutral-100">
+            <AlertDialogContent className="bg-[#121215] border border-[#2a2412] text-neutral-100 max-w-[90vw] sm:max-w-lg">
               <AlertDialogHeader>
                 <AlertDialogTitle className="text-amber-400 font-bold">
                   Delete this message?
@@ -124,22 +154,39 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
           </AlertDialog>
         </div>
 
-        {/* Secret Message Body */}
-        <div className="relative my-6 min-h-[90px] flex items-center">
-          <p className="text-xl md:text-2xl font-black text-black leading-snug break-words tracking-tight font-serif italic">
+        {/* --- CARD CENTER SECTION: The Anonymous Secret Message --- */}
+        <div className="relative z-10 my-auto py-6 px-2 flex flex-col items-center justify-center text-center">
+          <div className="w-8 h-0.5 bg-black/25 mb-4 rounded-full" />
+          <p className="text-lg sm:text-xl font-bold text-black leading-relaxed break-words tracking-tight font-serif italic max-h-[220px] overflow-y-auto pr-1">
             "{message.content}"
           </p>
+          <div className="w-8 h-0.5 bg-black/25 mt-4 rounded-full" />
         </div>
 
-        {/* Card Footer: Timestamp & Sparkle */}
-        <div className="relative pt-4 border-t-2 border-black/15 flex items-center justify-between text-xs font-extrabold text-black/70">
-          <div className="flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-black/60" />
-            <span>{dayjs(message.createdAt).format('MMM D, YYYY • h:mm A')}</span>
+        {/* --- CARD BOTTOM SECTION --- */}
+        <div className="relative z-10 flex items-end justify-between pt-3 border-t border-black/15">
+          {/* Bottom Left: Time & Anonymous Badge */}
+          <div className="space-y-1">
+            <div className="flex items-center gap-1.5 text-[11px] font-extrabold text-black/70">
+              <Clock className="w-3 h-3 text-black/60" />
+              <span>{dayjs(message.createdAt).format('MMM D, YYYY')}</span>
+            </div>
+            <div className="text-[10px] font-black uppercase tracking-wider text-cyan-900">
+              Anonymous Message
+            </div>
           </div>
-          <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-cyan-900">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-700 animate-pulse" />
-            <span>Verified Anonymous</span>
+
+          {/* Bottom-Right Inverted Playing Card Index (Classic 180° rotation) */}
+          <div className="flex flex-col items-center leading-none select-none rotate-180">
+            <span className="text-2xl sm:text-3xl font-black font-serif text-black tracking-tight">
+              {rank}
+            </span>
+            <span className={`text-xl sm:text-2xl font-bold leading-none ${isRedSuit ? 'text-red-700' : 'text-black'}`}>
+              {suit}
+            </span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-black/50 mt-1">
+              #{index + 1}
+            </span>
           </div>
         </div>
 
