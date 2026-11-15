@@ -202,7 +202,7 @@ function UserDashboard() {
         <header className="flex items-center justify-between gap-2 pb-2 border-b border-amber-500/20 shrink-0">
           <div>
             <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white font-serif drop-shadow-md">
-              Dashboard
+              User Dashboard
             </h1>
             <p className="text-[11px] sm:text-xs text-neutral-400 font-medium hidden sm:block">
               Manage your anonymous feedback and personal link.

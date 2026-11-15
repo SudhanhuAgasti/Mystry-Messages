@@ -3,7 +3,7 @@
 import React from 'react';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { Trash2, Clock, Sparkles, MessageSquareQuote } from 'lucide-react';
+import { Trash2, Clock, ShieldCheck, MessageSquareQuote } from 'lucide-react';
 import { Message } from '@/model/User';
 import {
   AlertDialog,
@@ -149,8 +149,8 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
             <span>{dayjs(message.createdAt).format('MMM D, YYYY • h:mm A')}</span>
           </div>
 
-          <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-cyan-900">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-700" />
+          <div className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-cyan-950">
+            <ShieldCheck className="w-3.5 h-3.5 text-cyan-800" />
             <span>Anonymous</span>
           </div>
         </div>
