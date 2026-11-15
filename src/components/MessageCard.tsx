@@ -52,10 +52,10 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
 
   return (
     // Vertical Playing Card Outer Frame
-    <div className="relative w-full max-w-[320px] sm:max-w-[340px] md:max-w-[360px] mx-auto select-none my-1">
+    <div className="relative w-full max-w-[300px] sm:max-w-[320px] md:max-w-[310px] lg:max-w-[320px] mx-auto select-none my-1">
       
       {/* Main Playing Card: Clean Vertical Shape with Creamy Ice Blue & Solid Black Border */}
-      <div className="relative z-10 w-full h-[400px] sm:h-[430px] md:h-[450px] rounded-[24px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[3px] border-black p-4 sm:p-5 shadow-[0_16px_40px_rgba(0,0,0,0.85)] flex flex-col justify-between overflow-hidden">
+      <div className="relative z-10 w-full h-[380px] sm:h-[400px] md:h-[350px] lg:h-[370px] rounded-[22px] bg-gradient-to-b from-[#f5faff] via-[#e2eef7] to-[#ccdfed] border-[2.5px] border-black p-4 sm:p-4.5 shadow-[0_12px_32px_rgba(0,0,0,0.8)] flex flex-col justify-between overflow-hidden">
         
         {/* Lined Notebook / Stationery Message Paper Texture Background */}
         <div 
@@ -74,7 +74,7 @@ export function MessageCard({ message, onMessageDelete, index = 0, total = 1 }: 
           className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05] select-none text-black"
           aria-hidden="true"
         >
-          <MessageSquareQuote className="w-52 h-52 stroke-[1.2]" />
+          <MessageSquareQuote className="w-40 h-40 md:w-36 md:h-36 stroke-[1.2]" />
         </div>
 
         {/* Elegant Inset Border Line for Stationery Note Feel */}
