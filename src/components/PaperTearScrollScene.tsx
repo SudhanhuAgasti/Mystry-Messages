@@ -245,7 +245,7 @@ export default function PaperTearScrollScene({ containerRef }: PaperTearScrollPr
       start: 'top top',
       end: '+=160%',
       pin: true,
-      scrub: 1.2,
+      scrub: true,
       anticipatePin: 1,
       onUpdate: (self) => {
         tearProgress.val = self.progress;
