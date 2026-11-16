@@ -218,7 +218,7 @@ function UserDashboard() {
       <TornPaperBackground />
 
       <div className="max-w-4xl w-full mx-auto flex-1 flex flex-col justify-between py-2 sm:py-3 relative z-10 min-h-0">
-        
+
         {/* Compact Header: Title + Status Switch in One Line */}
         <header className="flex items-center justify-between gap-2 pb-2 border-b border-amber-500/20 shrink-0">
           <div>
@@ -310,9 +310,6 @@ function UserDashboard() {
               {/* Card Navigation Controls */}
               <div className="flex items-center justify-between px-2 shrink-0">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-[11px] font-black">
-                    Message {activeCardIndex + 1} of {messages.length}
-                  </span>
                   <span className="hidden sm:inline-block text-[10px] text-neutral-400 font-medium">
                     (Auto-slides 10s)
                   </span>
@@ -344,7 +341,7 @@ function UserDashboard() {
               </div>
 
               {/* Interactive 3D Card Stage with Mobile Touch & Wheel Support */}
-              <div 
+              <div
                 onTouchStart={(e) => {
                   setTouchStartY(e.touches[0].clientY);
                 }}
@@ -370,13 +367,12 @@ function UserDashboard() {
                 className="flex-1 min-h-0 flex items-center justify-center overflow-hidden cursor-ns-resize touch-pan-x py-1"
               >
                 <div
-                  className={`w-full transition-all duration-300 ease-out transform ${
-                    isSwiping
+                  className={`w-full transition-all duration-300 ease-out transform ${isSwiping
                       ? swipeDirection === 'next'
                         ? '-translate-y-20 rotate-[-8deg] opacity-0 scale-90'
                         : 'translate-y-20 rotate-[8deg] opacity-0 scale-90'
                       : 'translate-y-0 rotate-0 opacity-100 scale-100'
-                  }`}
+                    }`}
                 >
                   <MessageCard
                     key={messages[activeCardIndex]._id?.toString() || `msg-${activeCardIndex}`}
