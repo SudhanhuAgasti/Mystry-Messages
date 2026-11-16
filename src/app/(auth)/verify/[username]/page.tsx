@@ -56,11 +56,11 @@ export default function VerifyAccount() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-[#070709] px-4 py-12 relative overflow-hidden font-sans">
+        <div className="flex justify-center items-center min-h-screen bg-[#070709] px-3 sm:px-4 py-8 sm:py-12 relative overflow-hidden font-sans">
             {/* Ambient Gold Glow */}
             <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-gradient-to-r from-amber-500/10 via-yellow-500/15 to-transparent blur-3xl pointer-events-none rounded-full" />
 
-            <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f13] border border-[#2d2512] rounded-2xl shadow-2xl relative z-10">
+            <div className="w-full max-w-sm sm:max-w-md p-6 sm:p-8 space-y-6 sm:space-y-7 bg-[#0f0f13] border border-[#2d2512] rounded-2xl shadow-2xl relative z-10">
                 {/* Crown Header */}
                 <div className="text-center space-y-2">
                     <div className="inline-flex p-2.5 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 shadow-lg shadow-amber-500/20 mb-2">

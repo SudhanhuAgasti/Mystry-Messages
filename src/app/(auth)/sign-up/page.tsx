@@ -114,16 +114,16 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#0b0b0e] px-4 py-12 relative overflow-hidden font-sans selection:bg-amber-400 selection:text-black">
+    <div className="flex justify-center items-center min-h-screen bg-[#0b0b0e] px-3 sm:px-4 py-8 sm:py-12 relative overflow-hidden font-sans selection:bg-amber-400 selection:text-black">
       {/* Torn Paper Background */}
       <TornPaperBackground />
 
-      <div className="w-full max-w-md p-8 space-y-7 bg-[#0f0f14]/90 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl relative z-10">
+      <div className="w-full max-w-sm sm:max-w-md p-6 sm:p-8 space-y-6 sm:space-y-7 bg-[#0f0f14]/90 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl relative z-10">
         {/* Close / Cross Button to return Home */}
         <a
           href="/"
           aria-label="Close"
-          className="absolute top-5 right-5 p-2 rounded-full bg-[#181820] border border-amber-500/20 text-neutral-400 hover:text-white hover:border-amber-400 hover:bg-[#20202a] transition-all cursor-pointer"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-[#181820] border border-amber-500/20 text-neutral-400 hover:text-white hover:border-amber-400 hover:bg-[#20202a] transition-all cursor-pointer"
         >
           <X className="w-4 h-4" />
         </a>

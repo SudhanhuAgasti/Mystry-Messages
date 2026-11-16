@@ -210,7 +210,7 @@ function UserDashboard() {
   };
 
   return (
-    <div className="h-screen max-h-screen bg-[#0b0b0e] text-neutral-100 pt-16 pb-2 px-3 sm:px-6 relative selection:bg-amber-400 selection:text-black flex flex-col overflow-hidden">
+    <div className="min-h-screen md:h-screen md:max-h-screen bg-[#0b0b0e] text-neutral-100 pt-16 pb-4 md:pb-2 px-3 sm:px-6 relative selection:bg-amber-400 selection:text-black flex flex-col overflow-y-auto md:overflow-hidden">
       {/* Constant Top Navbar on Dashboard */}
       <Navbar className="!z-50" />
 
