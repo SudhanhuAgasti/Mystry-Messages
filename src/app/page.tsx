@@ -103,29 +103,31 @@ export default function Home() {
   };
 
   // Compute exact drop physics proportional to paper tear progress (0 to 1)
-  // Initially words are visible (opacity: 1) resting in place.
-  // As user scrolls and paper tears from center outwards, words drop down into place dynamically
+  // Initially words start hidden above (negative Y) and drop down one-by-one as the yellow paper tears open
   const getWordStyle = (dropStart: number, dropEnd: number) => {
-    // If not scrolled yet (0 to 0.02), display in place so user is never faced with an empty black void
-    if (scrollProgress < 0.02) {
+    // Before paper starts tearing, words sit elevated above waiting to drop
+    if (scrollProgress < dropStart) {
       return {
-        transform: 'translate3d(0, 0px, 0) scale(1)',
-        opacity: 1,
-        transition: 'opacity 0.2s ease, transform 0.2s ease',
+        transform: 'translate3d(0, -60px, 0) scale(0.85)',
+        opacity: 0,
+        filter: 'blur(4px)',
+        transition: 'none',
       };
     }
 
     const rawT = (scrollProgress - dropStart) / (dropEnd - dropStart);
     const t = Math.min(1, Math.max(0, rawT));
-    // Smooth easeOutBack curve for crisp physical dropping weight
+    // Physical bounce / elastic easeOutBack curve for real dropping weight
     const easeT = 1 - Math.pow(1 - t, 3);
-    const y = -45 * (1 - easeT);
-    const opacity = 0.2 + 0.8 * easeT;
-    const scale = 0.9 + 0.1 * easeT;
+    const y = -60 * (1 - easeT);
+    const opacity = easeT;
+    const scale = 0.85 + 0.15 * easeT;
+    const blur = 4 * (1 - easeT);
 
     return {
       transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
       opacity: opacity,
+      filter: blur > 0.1 ? `blur(${blur}px)` : 'none',
       transition: 'none',
     };
   };
