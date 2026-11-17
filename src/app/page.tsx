@@ -216,9 +216,12 @@ export default function Home() {
 
                 <span
                   style={getWordStyle(0.38, 0.58)}
-                  className="text-neutral-100 will-change-transform"
+                  className="text-neutral-100 will-change-transform inline-flex items-baseline"
                 >
-                  Truth !!
+                  <span className="text-amber-400 font-black inline-block animate-pulse drop-shadow-[0_0_14px_rgba(251,191,36,0.7)] mr-0.5">
+                    T
+                  </span>
+                  <span>ruth !!</span>
                 </span>
               </div>
 
@@ -226,9 +229,12 @@ export default function Home() {
               <div className="font-sans uppercase font-extrabold tracking-wider mt-2 flex items-center justify-center gap-2.5 sm:gap-3.5 flex-wrap text-white">
                 <span
                   style={getWordStyle(0.55, 0.75)}
-                  className="will-change-transform"
+                  className="will-change-transform inline-flex items-baseline"
                 >
-                  Complete
+                  <span className="text-amber-400 font-black inline-block animate-pulse drop-shadow-[0_0_14px_rgba(251,191,36,0.7)] mr-0.5">
+                    C
+                  </span>
+                  <span>omplete</span>
                 </span>
                 <span
                   style={getWordStyle(0.72, 0.95)}

@@ -2,6 +2,7 @@
   "css.customData": [],
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
-  "less.lint.unknownAtRules": "ignore"
+  "less.lint.unknownAtRules": "ignore",
+  "json.schemaDownload.enable": false
 }
 
