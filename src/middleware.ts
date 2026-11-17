@@ -33,13 +33,12 @@
 // };
 
 
-// HERE WE USE proxy SO THE COD BE LIKE ......
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
-  const url = request.nextUrl;
+  const url = request.nextUrl.clone();
 
   // Logged-in user auth pages par na jaye
   if (
@@ -51,13 +50,14 @@ export async function proxy(request: NextRequest) {
       url.pathname.startsWith("/verify")
     )
   ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
   }
 
   // Logged-out user dashboard access na kare
   if (!token && url.pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/home", request.url));
-    // Agar hamare paas sign-in page hai to "/sign-in" bhi use kar sakte ho.
+    url.pathname = "/sign-in";
+    return NextResponse.redirect(url);
   }
 
   // Baaki sab requests normal chale
