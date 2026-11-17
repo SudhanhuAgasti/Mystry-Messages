@@ -21,8 +21,15 @@ import * as z from 'zod';
 import { ApiResponse } from '@/types/ApiResponse';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { messageSchema } from '@/schemas/messageSchema';
 import Navbar from '@/components/Navbar';
+
+// Schema defined directly inline to eliminate any cross-platform file casing or import resolution mismatch
+const messageSchema = z.object({
+  content: z
+    .string()
+    .min(1, { message: "Message cannot be empty" })
+    .max(500, { message: "Message must be under 500 characters" }),
+});
 
 // Production lazy loading for heavy canvas background
 const TornPaperBackground = dynamic(() => import('@/components/TornPaperBackground'), {
