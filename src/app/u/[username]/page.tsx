@@ -118,38 +118,38 @@ export default function SendMessage() {
   };
 
   return (
-    <div className="h-screen max-h-screen bg-[#0b0b0e] text-neutral-100 flex flex-col font-sans selection:bg-amber-400 selection:text-black relative pt-16 overflow-y-auto lg:overflow-hidden">
+    <div className="min-h-screen bg-[#0b0b0e] text-neutral-100 flex flex-col font-sans selection:bg-amber-400 selection:text-black relative pt-16 overflow-x-hidden">
       {/* Torn Paper Realistic Background */}
       <TornPaperBackground />
 
       <Navbar className="!z-50" />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-3 sm:py-5 relative z-10 flex flex-col justify-between min-h-0">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-6 relative z-10 flex flex-col justify-between">
 
         {/* Top Header Section */}
-        <header className="text-center space-y-1.5 shrink-0">
+        <header className="text-center space-y-2 shrink-0 mb-2">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#141419]/90 border border-amber-500/30 text-amber-300 text-[11px] font-extrabold shadow-lg backdrop-blur-md">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
             <span>100% End-to-End Anonymous Drop</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white font-serif drop-shadow-md">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white font-serif drop-shadow-md break-words">
             Send Anonymous Message to{' '}
             <span className="bg-gradient-to-r from-amber-400 to-yellow-500 text-black px-3 py-0.5 rounded-xl inline-block -rotate-1 shadow-md font-sans">
               @{username}
             </span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-neutral-300 font-medium max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-neutral-300 font-medium max-w-lg mx-auto px-2">
             @{username} will never know who sent this message. Be kind, honest, or confess your secret!
           </p>
         </header>
 
-        {/* Main Side-by-Side Content Grid for Desktop/iPad, Stacked on Mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 items-stretch flex-1 min-h-0 my-2 sm:my-3">
+        {/* Main Side-by-Side Content Grid for Desktop, Clean Stack on Mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch my-3">
 
-          {/* Left Column: Rich Creamy Blue Message Form Card (7 cols on Desktop) */}
-          <section className="md:col-span-7 flex flex-col justify-between rounded-[22px] bg-gradient-to-b from-[#e3f2fd] via-[#bbdefb] to-[#90caf9] text-black p-4 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.8)] border-[2.5px] border-black relative overflow-hidden group">
+          {/* Left Column: Rich Creamy Blue Message Form Card */}
+          <section className="lg:col-span-7 flex flex-col justify-between rounded-[22px] bg-gradient-to-b from-[#e3f2fd] via-[#bbdefb] to-[#90caf9] text-black p-4 sm:p-6 shadow-[0_12px_32px_rgba(0,0,0,0.8)] border-[2.5px] border-black relative overflow-hidden group min-h-[320px] sm:min-h-[360px]">
 
             {/* Lined Stationery Message Paper Texture Background */}
             <div 
@@ -175,16 +175,16 @@ export default function SendMessage() {
             </div>
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="relative z-10 flex-1 flex flex-col justify-between pt-3 space-y-3 min-h-0">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="relative z-10 flex-1 flex flex-col justify-between pt-3 space-y-3">
                 <FormField
                   control={form.control}
                   name="content"
                   render={({ field }) => (
-                    <FormItem className="flex-1 flex flex-col min-h-0">
+                    <FormItem className="flex-1 flex flex-col">
                       <FormControl className="flex-1">
                         <Textarea
                           placeholder={`Write something heartfelt, funny, or intriguing for @${username}...`}
-                          className="w-full flex-1 resize-none bg-white/75 border-black/30 focus-visible:border-black focus-visible:ring-1 focus-visible:ring-black text-black placeholder:text-black/50 rounded-xl text-sm sm:text-base p-3.5 leading-relaxed transition-all shadow-inner font-sans font-semibold"
+                          className="w-full min-h-[140px] sm:min-h-[160px] flex-1 resize-none bg-white/75 border-black/30 focus-visible:border-black focus-visible:ring-1 focus-visible:ring-black text-black placeholder:text-black/50 rounded-xl text-sm sm:text-base p-3.5 leading-relaxed transition-all shadow-inner font-sans font-semibold"
                           {...field}
                         />
                       </FormControl>
@@ -193,14 +193,14 @@ export default function SendMessage() {
                   )}
                 />
 
-                <div className="flex items-center justify-between pt-2 shrink-0">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 shrink-0">
                   <div className="flex items-center gap-1.5 text-[11px] font-bold text-black/70">
-                    <HeartHandshake className="w-3.5 h-3.5 text-black" />
+                    <HeartHandshake className="w-3.5 h-3.5 text-black shrink-0" />
                     <span>Safe & Anonymous</span>
                   </div>
 
                   {isLoading ? (
-                    <Button disabled className="bg-black/40 text-black font-black rounded-xl h-10 px-5 text-xs">
+                    <Button disabled className="bg-black/40 text-black font-black rounded-xl h-10 px-5 text-xs w-full sm:w-auto">
                       <Loader2 className="mr-2 h-4 w-4 animate-spin text-black" />
                       Delivering...
                     </Button>
@@ -208,7 +208,7 @@ export default function SendMessage() {
                     <Button
                       type="submit"
                       disabled={isLoading || !messageContent}
-                      className="bg-black hover:bg-neutral-900 text-white font-black px-6 h-10 text-xs sm:text-sm rounded-xl shadow-xl border-0 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+                      className="w-full sm:w-auto bg-black hover:bg-neutral-900 text-white font-black px-6 h-10 text-xs sm:text-sm rounded-xl shadow-xl border-0 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5 mr-2 text-cyan-300" />
                       Send Secret Message
@@ -226,8 +226,8 @@ export default function SendMessage() {
             )}
           </section>
 
-          {/* Right Column: Rich Creamy Blue AI Suggestions Card (5 cols on Desktop) */}
-          <section className="md:col-span-5 flex flex-col justify-between rounded-[22px] bg-gradient-to-b from-[#e3f2fd] via-[#bbdefb] to-[#90caf9] text-black p-4 sm:p-5 shadow-[0_12px_32px_rgba(0,0,0,0.8)] border-[2.5px] border-black relative overflow-hidden">
+          {/* Right Column: Rich Creamy Blue AI Suggestions Card */}
+          <section className="lg:col-span-5 flex flex-col justify-between rounded-[22px] bg-gradient-to-b from-[#e3f2fd] via-[#bbdefb] to-[#90caf9] text-black p-4 sm:p-5 shadow-[0_12px_32px_rgba(0,0,0,0.8)] border-[2.5px] border-black relative overflow-hidden min-h-[280px]">
 
             {/* Lined Stationery Message Paper Texture Background */}
             <div 
@@ -248,7 +248,7 @@ export default function SendMessage() {
                   <Lightbulb className="w-3.5 h-3.5 text-black fill-black" />
                   Need Inspiration?
                 </h2>
-                <p className="text-[11px] text-black/60 font-semibold">Click a prompt to load into text box</p>
+                <p className="text-[11px] text-black/60 font-semibold">Tap a prompt to load into text box</p>
               </div>
 
               <Button
@@ -266,19 +266,19 @@ export default function SendMessage() {
               </Button>
             </div>
 
-            {/* Prompt Cards Grid */}
-            <div className="relative z-10 flex-1 flex flex-col justify-center gap-2 py-2 overflow-y-auto min-h-0">
+            {/* Prompt Cards List */}
+            <div className="relative z-10 flex flex-col justify-center gap-2.5 py-3">
               {suggestedQuestions.map((msg, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => handleMessageClick(msg)}
-                  className="w-full text-left p-2.5 sm:p-3 rounded-xl bg-white/75 hover:bg-white border border-black/25 hover:border-black text-black text-xs font-bold transition-all group shadow-sm cursor-pointer flex items-start gap-2 hover:scale-[1.01]"
+                  className="w-full text-left p-3 rounded-xl bg-white/80 hover:bg-white active:bg-white border border-black/25 hover:border-black text-black text-xs font-bold transition-all group shadow-sm cursor-pointer flex items-start gap-2.5 hover:scale-[1.01]"
                 >
-                  <span className="text-black font-black text-xs group-hover:translate-x-0.5 transition-transform mt-0.5">
+                  <span className="text-black font-black text-xs group-hover:translate-x-0.5 transition-transform mt-0.5 shrink-0">
                     →
                   </span>
-                  <span className="line-clamp-2 italic leading-relaxed">
+                  <span className="italic leading-relaxed break-words">
                     "{msg}"
                   </span>
                 </button>
@@ -293,15 +293,15 @@ export default function SendMessage() {
 
         </div>
 
-        {/* Create Account CTA - Clean Single-line Footer */}
-        <footer className="py-2 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0">
+        {/* Create Account CTA - Clean Footer */}
+        <footer className="mt-4 pt-3 pb-2 border-t border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <p className="text-xs font-bold text-neutral-300 text-center sm:text-left">
             Want to receive anonymous messages like @{username}?
           </p>
-          <Link href="/sign-up">
+          <Link href="/sign-up" className="w-full sm:w-auto">
             <Button
               size="sm"
-              className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black text-xs font-black px-4 py-1.5 h-8 rounded-lg shadow-md border-0 transition hover:scale-105 flex items-center gap-1.5"
+              className="w-full sm:w-auto bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black text-xs font-black px-4 py-2 h-9 rounded-lg shadow-md border-0 transition hover:scale-105 flex items-center justify-center gap-1.5"
             >
               <span>Create Your Board</span>
               <ArrowRight className="w-3.5 h-3.5" />

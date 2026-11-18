@@ -230,7 +230,7 @@ function UserDashboard() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-[#141419]/90 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-lg border border-amber-500/30 shrink-0">
+          <div className="flex items-center gap-2.5 bg-[#141419]/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl shadow-lg border border-amber-500/30 shrink-0">
             <span className="text-[10px] uppercase tracking-wider font-extrabold text-neutral-400">
               Status:
             </span>
@@ -239,9 +239,17 @@ function UserDashboard() {
               checked={!!acceptMessages}
               onCheckedChange={handleSwitchChange}
               disabled={isSwitchLoading}
-              className="scale-90"
+              className={`scale-90 transition-all data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-rose-500/80 border-2 ${
+                acceptMessages ? 'border-emerald-400/80' : 'border-rose-400/80'
+              }`}
             />
-            <span className={`text-[11px] font-black ${acceptMessages ? 'text-amber-400' : 'text-neutral-500'}`}>
+            <span
+              className={`text-[11px] font-black px-2 py-0.5 rounded-md border tracking-wider transition-all ${
+                acceptMessages
+                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
+                  : 'bg-rose-500/20 text-rose-400 border-rose-500/40'
+              }`}
+            >
               {acceptMessages ? 'ACCEPTING' : 'MUTED'}
             </span>
           </div>
