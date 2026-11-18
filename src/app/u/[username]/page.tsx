@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import axios, { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Loader2, Send, Crown, CheckCircle2, Lightbulb, ShieldCheck, HeartHandshake, ArrowRight, MessageSquareQuote } from 'lucide-react';
+import { Loader2, Send, Crown, CheckCircle2, Lightbulb, ShieldCheck, HeartHandshake, ArrowRight, MessageSquareQuote, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import * as z from 'zod';
 import { ApiResponse } from '@/types/ApiResponse';
 import Link from 'next/link';
@@ -48,12 +48,12 @@ const initialMessageString =
 export default function SendMessage() {
   const params = useParams<{ username: string }>();
   const username = params.username;
-  const { toast } = useToast();
 
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>(() =>
     parseStringMessages(initialMessageString)
   );
   const [isSuggestLoading, setIsSuggestLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
@@ -63,6 +63,7 @@ export default function SendMessage() {
 
   const handleMessageClick = (message: string) => {
     form.setValue('content', message);
+    setErrorMessage(null);
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -70,26 +71,40 @@ export default function SendMessage() {
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
       const response = await axios.post<ApiResponse>('/api/send-message', {
         ...data,
         username,
       });
 
-      toast({
-        title: 'Delivered!',
+      toast.success('Message Delivered!', {
         description: response.data.message || 'Your anonymous message was sent safely.',
       });
       form.reset({ ...form.getValues(), content: '' });
       setIsSent(true);
-      setTimeout(() => setIsSent(false), 4000);
+      setTimeout(() => setIsSent(false), 5000);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast({
-        title: 'Error',
-        description: axiosError.response?.data?.message ?? 'Failed to send message',
-        variant: 'destructive',
-      });
+      const rawMsg = axiosError.response?.data?.message || 'Failed to send message. Please try again.';
+      setErrorMessage(rawMsg);
+
+      if (axiosError.response?.status === 422) {
+        toast.error('Offensive Content Detected', {
+          description: rawMsg,
+          duration: 6000,
+        });
+      } else if (axiosError.response?.status === 403) {
+        toast.warning('Messages Muted', {
+          description: rawMsg,
+          duration: 6000,
+        });
+      } else {
+        toast.error('Delivery Failed', {
+          description: rawMsg,
+          duration: 5000,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -107,10 +122,8 @@ export default function SendMessage() {
       }
     } catch (error) {
       console.error('Error fetching messages:', error);
-      toast({
-        title: 'Suggestion Error',
+      toast.error('Suggestion Error', {
         description: 'Failed to load new questions. Please try again.',
-        variant: 'destructive',
       });
     } finally {
       setIsSuggestLoading(false);
@@ -186,12 +199,29 @@ export default function SendMessage() {
                           placeholder={`Write something heartfelt, funny, or intriguing for @${username}...`}
                           className="w-full min-h-[140px] sm:min-h-[160px] flex-1 resize-none bg-white/75 border-black/30 focus-visible:border-black focus-visible:ring-1 focus-visible:ring-black text-black placeholder:text-black/50 rounded-xl text-sm sm:text-base p-3.5 leading-relaxed transition-all shadow-inner font-sans font-semibold"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            if (errorMessage) setErrorMessage(null);
+                          }}
                         />
                       </FormControl>
                       <FormMessage className="text-red-700 font-bold text-xs mt-1" />
                     </FormItem>
                   )}
                 />
+
+                {/* Inline Visual Banner for Warnings / Errors */}
+                {errorMessage && (
+                  <div className="relative z-10 p-3 rounded-xl bg-red-600/10 border-2 border-red-600/70 text-red-900 text-xs font-bold flex items-start gap-2 shadow-sm animate-in fade-in slide-in-from-top-1">
+                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <span className="font-extrabold uppercase tracking-wide block text-[11px] text-red-700">
+                        Notice / Warning:
+                      </span>
+                      <p className="mt-0.5 leading-relaxed">{errorMessage}</p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 shrink-0">
                   <div className="flex items-center gap-1.5 text-[11px] font-bold text-black/70">
