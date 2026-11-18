@@ -34,6 +34,18 @@ const MessageCard = dynamic(
   }
 );
 
+const EmptyStateCard = dynamic(
+  () => import('@/components/EmptyStateCard').then((mod) => mod.EmptyStateCard),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full max-w-[310px] h-[370px] rounded-[22px] bg-[#bbdefb]/20 border-2 border-black/30 flex items-center justify-center animate-pulse mx-auto">
+        <Loader2 className="w-6 h-6 animate-spin text-amber-400" />
+      </div>
+    ),
+  }
+);
+
 function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
@@ -46,9 +58,12 @@ function UserDashboard() {
 
   const { toast } = useToast();
 
+  const totalCards = messages.length > 0 ? messages.length + 1 : 0;
+  const isViewingEndCard = messages.length > 0 && activeCardIndex === messages.length;
+
   const handleSwipe = useCallback((direction: 'next' | 'prev') => {
     if (isSwiping) return;
-    if (direction === 'next' && activeCardIndex < messages.length - 1) {
+    if (direction === 'next' && activeCardIndex < totalCards - 1) {
       setSwipeDirection('next');
       setIsSwiping(true);
       setTimeout(() => {
@@ -63,7 +78,7 @@ function UserDashboard() {
         setIsSwiping(false);
       }, 320);
     }
-  }, [activeCardIndex, messages.length, isSwiping]);
+  }, [activeCardIndex, totalCards, isSwiping]);
 
   // Auto-scroll every 10 seconds if user is idle and messages exist
   useEffect(() => {
@@ -305,7 +320,7 @@ function UserDashboard() {
 
         {/* Messages Presentation Stage (Fit in Viewport) */}
         <main className="flex-1 min-h-0 flex flex-col justify-center">
-          {messages.length > 0 && messages[activeCardIndex] ? (
+          {messages.length > 0 ? (
             <div className="flex flex-col h-full justify-between py-1">
               {/* Card Navigation Controls */}
               <div className="flex items-center justify-between px-2 shrink-0">
@@ -330,7 +345,7 @@ function UserDashboard() {
                   <Button
                     size="sm"
                     variant="outline"
-                    disabled={activeCardIndex >= messages.length - 1 || isSwiping}
+                    disabled={activeCardIndex >= totalCards - 1 || isSwiping}
                     onClick={() => handleSwipe('next')}
                     className="h-7 px-2.5 text-xs rounded-lg border-neutral-700 bg-[#141419]/90 text-neutral-200 hover:text-cyan-300 hover:border-cyan-400 transition"
                   >
@@ -349,7 +364,7 @@ function UserDashboard() {
                   if (touchStartY === null || isSwiping) return;
                   const touchEndY = e.changedTouches[0].clientY;
                   const deltaY = touchStartY - touchEndY;
-                  if (deltaY > 40 && activeCardIndex < messages.length - 1) {
+                  if (deltaY > 40 && activeCardIndex < totalCards - 1) {
                     handleSwipe('next');
                   } else if (deltaY < -40 && activeCardIndex > 0) {
                     handleSwipe('prev');
@@ -358,7 +373,7 @@ function UserDashboard() {
                 }}
                 onWheel={(e) => {
                   if (isSwiping) return;
-                  if (e.deltaY > 15 && activeCardIndex < messages.length - 1) {
+                  if (e.deltaY > 15 && activeCardIndex < totalCards - 1) {
                     handleSwipe('next');
                   } else if (e.deltaY < -15 && activeCardIndex > 0) {
                     handleSwipe('prev');
@@ -374,13 +389,25 @@ function UserDashboard() {
                       : 'translate-y-0 rotate-0 opacity-100 scale-100'
                     }`}
                 >
-                  <MessageCard
-                    key={messages[activeCardIndex]._id?.toString() || `msg-${activeCardIndex}`}
-                    message={messages[activeCardIndex]}
-                    index={activeCardIndex}
-                    total={messages.length}
-                    onMessageDelete={handleDeleteMessage}
-                  />
+                  {isViewingEndCard ? (
+                    <EmptyStateCard
+                      onRefresh={() => {
+                        setActiveCardIndex(0);
+                        fetchMessages();
+                      }}
+                      isLoading={isLoading}
+                      onCopyLink={copyToClipboard}
+                      isEndState={true}
+                    />
+                  ) : (
+                    <MessageCard
+                      key={messages[activeCardIndex]._id?.toString() || `msg-${activeCardIndex}`}
+                      message={messages[activeCardIndex]}
+                      index={activeCardIndex}
+                      total={messages.length}
+                      onMessageDelete={handleDeleteMessage}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -390,14 +417,13 @@ function UserDashboard() {
               </p>
             </div>
           ) : (
-            <div className="my-auto py-8 sm:py-12 px-4 rounded-2xl bg-[#0f0f14]/85 backdrop-blur-md text-white border border-amber-500/20 text-center space-y-2 shadow-xl">
-              <div className="w-10 h-10 mx-auto rounded-full bg-neutral-900 flex items-center justify-center text-amber-400">
-                <Inbox className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-amber-400">No messages yet</h3>
-              <p className="text-xs text-neutral-300 max-w-xs mx-auto">
-                Share your unique link with friends to start getting secret feedback and confessions.
-              </p>
+            <div className="flex-1 min-h-0 flex items-center justify-center py-2">
+              <EmptyStateCard
+                onRefresh={fetchMessages}
+                isLoading={isLoading}
+                onCopyLink={copyToClipboard}
+                isEndState={false}
+              />
             </div>
           )}
         </main>
