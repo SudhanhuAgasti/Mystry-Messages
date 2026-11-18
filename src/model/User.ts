@@ -19,9 +19,9 @@ const messageSchema:Schema<Message>=new Schema({
 export interface User extends Document{
    username: string;
    email: string;
-   password: string;
-   verifyCode: string;
-   verifyCodeExpire: Date;
+   password?: string;
+   verifyCode?: string;
+   verifyCodeExpire?: Date;
    isVerified: boolean;
    isAcceptingMessage: boolean;
    message: Message[];
@@ -42,16 +42,15 @@ const UserSchema:Schema<User>=new Schema({
     },
     password:{
         type:String,
-        required:true,
-        length:[6,"Password must be 6 char. atleast !"]
+        required:false,
     },
     verifyCode:{
         type:String,
-        required:[true,"Verifycode must be required !"],
+        required:false,
     },
     verifyCodeExpire:{
         type:Date,
-        required:[true,"VerifycodeExpie is required !"],
+        required:false,
     },
     isVerified:{
         type:Boolean,

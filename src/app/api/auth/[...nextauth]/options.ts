@@ -1,11 +1,23 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    }),
+
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID || "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+    }),
+
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
@@ -46,7 +58,7 @@ export const authOptions: NextAuthOptions = {
 
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password || ""
           );
 
           if (!isPasswordCorrect) {
@@ -64,6 +76,49 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google" || account?.provider === "github") {
+        await dbConnect();
+        try {
+          const existingUser = await UserModel.findOne({ email: user.email });
+
+          if (!existingUser) {
+            // Generate clean unique username from email or provider profile
+            const baseUsername = user.email ? user.email.split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, "") : `user_${Date.now()}`;
+            let username = baseUsername;
+            let counter = 1;
+            while (await UserModel.findOne({ username })) {
+              username = `${baseUsername}${counter}`;
+              counter++;
+            }
+
+            const newUser = new UserModel({
+              username,
+              email: user.email,
+              isVerified: true,
+              isAcceptingMessage: true,
+              message: [],
+            });
+            await newUser.save();
+            user._id = newUser._id.toString();
+            (user as any).username = newUser.username;
+            (user as any).isVerified = newUser.isVerified;
+            (user as any).isAcceptingMessage = newUser.isAcceptingMessage;
+          } else {
+            user._id = existingUser._id.toString();
+            (user as any).username = existingUser.username;
+            (user as any).isVerified = existingUser.isVerified;
+            (user as any).isAcceptingMessage = existingUser.isAcceptingMessage;
+          }
+          return true;
+        } catch (error) {
+          console.error("Error saving OAuth user:", error);
+          return false;
+        }
+      }
+      return true;
+    },
+
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id;
@@ -78,9 +133,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token._id = user._id?.toString();
-        token.isVerified = user.isVerified;
-        token.isAcceptingMessage = user.isAcceptingMessage;
-        token.username = user.username;
+        token.isVerified = (user as any).isVerified ?? true;
+        token.isAcceptingMessage = (user as any).isAcceptingMessage ?? true;
+        token.username = (user as any).username;
       }
 
       return token;
