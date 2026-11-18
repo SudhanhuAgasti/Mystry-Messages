@@ -7,14 +7,21 @@ export interface ModerationResult {
 }
 
 /**
- * Fast local regex fallback covering critical offensive keywords and slang
- * across English and common Hindi/Hinglish abusive patterns.
+ * Enterprise-grade dictionary of regex patterns covering critical offensive keywords
+ * across English, Hindi/Hinglish, and Odia/Odienglish slangs.
  */
 const PROFANITY_PATTERNS: RegExp[] = [
-  // Common English profanity & vulgarity patterns
-  /\b(fuck|shit|bitch|bastard|asshole|cunt|dick|whore|slut|pussy|faggot)\b/i,
-  // Common Hindi/Hinglish slangs & abuse patterns
+  // 1. English profanity & vulgarities
+  /\b(fuck|shit|bitch|bastard|asshole|cunt|dick|whore|slut|pussy|faggot|motherfucker)\b/i,
+
+  // 2. Hindi / Hinglish slangs & abuse patterns
   /\b(mc|bc|bkl|bsdk|chutiya|chutiye|madarchod|behenchod|bhenchod|gandu|harami|bhosdike|laude|lodu|randi|kamine|kamina|saale|gaand)\b/i,
+
+  // 3. Odia / Odienglish slangs & vulgarities (Latin script / English alphabet)
+  /\b(maghia|maghiaa|magia|gandia|gandi|baalia|balia|khandia|randipua|randi\s*pua|bhadua|bhaduwa|chudua|chuduwa|bapara|behesara|jhanta|dhana|dhada|beda|bedha|padara|puduru|bokachoda|bokachuda|chodi|choda|bhalu|thiki)\b/i,
+
+  // 4. Odia script slangs (Unicode / Odia script)
+  /(ମାଗିଆ|ଗାଣ୍ଡିଆ|ଗାଣ୍ଡି|ବାଳିଆ|ରାଣ୍ଡିପୁଅ|ଭଦୁଆ|ଛୁଦୁଆ|ଝାଣ୍ଟ|ବେଢା)/u,
 ];
 
 /**
@@ -27,7 +34,7 @@ function fastLocalCheck(content: string): ModerationResult {
     if (pattern.test(normalized)) {
       return {
         isSafe: false,
-        reason: "Message contains offensive or abusive language.",
+        reason: "Message contains offensive or abusive language (English/Hindi/Odia).",
         flaggedCategory: "profanity",
       };
     }
@@ -38,6 +45,7 @@ function fastLocalCheck(content: string): ModerationResult {
 
 /**
  * Enterprise-grade multi-layer content moderation using Google Gemini AI + heuristic fail-safes.
+ * Covers English, Hindi, Hinglish, Odia, and Odienglish (Odia written in Latin script).
  *
  * @param content The anonymous message payload to inspect
  * @returns ModerationResult with safety verdict and human-readable feedback
@@ -55,7 +63,7 @@ export async function moderateContent(content: string): Promise<ModerationResult
     return localVerdict;
   }
 
-  // Layer 2: Deep semantic analysis via Gemini AI (covers Hinglish, slangs, hate, threats, bypass attempts)
+  // Layer 2: Deep semantic analysis via Gemini AI (covers Odia, Odienglish, Hinglish, disguised slangs, threats)
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey || apiKey.trim() === "") {
     // If AI key is absent, rely on layer 1 heuristics
@@ -69,13 +77,16 @@ export async function moderateContent(content: string): Promise<ModerationResult
 You are an advanced automated content moderation engine for an anonymous messaging platform.
 Analyze the user's message for any of the following:
 1. Severe toxicity, verbal abuse, cyberbullying, or harassment.
-2. Profanity, slangs, or vulgar abusive words in English, Hindi, or Hinglish (e.g. slangs disguised with leetspeak or altered spelling).
+2. Profanity, abusive slangs, or vulgar words in:
+   - English
+   - Hindi / Hinglish
+   - Odia / Odienglish (Odia language written in English alphabet, such as common Odia slangs e.g. "maghia", "gandia", "randipua", "bhadua", "baalia", "jhanta", etc.)
 3. Hate speech, discrimination, death threats, or violence.
 4. Non-consensual sexual harassment or explicit sexual content.
 
 Rules:
 - Friendly banter, creative confessions, honest constructive feedback, jokes, or emotional messages are SAFE.
-- Abusive slangs, insults, threats, hate speech, or harassment are NOT SAFE.
+- Abusive slangs, vulgarities, insults, threats, hate speech, or harassment in ANY language (especially Odia/Odienglish, Hindi, or English) are STRICTLY NOT SAFE.
 - Return ONLY valid JSON with this exact schema:
 {"isSafe": boolean, "category": "harassment" | "hate_speech" | "sexual_content" | "profanity" | "violence" | "none", "reason": "concise polite reason if unsafe, otherwise empty string"}
 `;
