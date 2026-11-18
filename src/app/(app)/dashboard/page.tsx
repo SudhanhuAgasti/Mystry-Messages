@@ -239,17 +239,9 @@ function UserDashboard() {
               checked={!!acceptMessages}
               onCheckedChange={handleSwitchChange}
               disabled={isSwitchLoading}
-              className={`scale-90 transition-all data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-rose-500/80 border-2 ${
-                acceptMessages ? 'border-emerald-400/80' : 'border-rose-400/80'
-              }`}
+              className="scale-90 data-[state=checked]:bg-white data-[state=unchecked]:bg-neutral-300 [&>span]:bg-black"
             />
-            <span
-              className={`text-[11px] font-black px-2 py-0.5 rounded-md border tracking-wider transition-all ${
-                acceptMessages
-                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40'
-                  : 'bg-rose-500/20 text-rose-400 border-rose-500/40'
-              }`}
-            >
+            <span className="text-[11px] font-black text-amber-400 tracking-wider">
               {acceptMessages ? 'ACCEPTING' : 'MUTED'}
             </span>
           </div>
