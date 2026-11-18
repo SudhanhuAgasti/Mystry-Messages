@@ -184,7 +184,9 @@ export default function SignInForm() {
 
                     <Button
                         type="button"
-                        onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+                        onClick={() => toast.info("GitHub Login Coming Soon!", {
+                            description: "GitHub sign-in is currently under development. Please use Google or Email to continue.",
+                        })}
                         className="w-full bg-[#181820] hover:bg-[#22222d] text-neutral-200 border border-neutral-800 hover:border-amber-400/50 rounded-xl py-4 text-xs font-semibold flex items-center justify-center gap-2 transition"
                     >
                         <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
