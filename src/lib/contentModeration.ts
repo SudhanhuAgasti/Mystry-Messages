@@ -15,7 +15,7 @@ const PROFANITY_PATTERNS: RegExp[] = [
   /\b(fuck|shit|bitch|bastard|asshole|cunt|dick|whore|slut|pussy|faggot|motherfucker)\b/i,
 
   // 2. Hindi / Hinglish slangs & abuse patterns
-  /\b(mc|bc|bkl|bsdk|chutiya|chutiye|madarchod|behenchod|bhenchod|matherchod|matherchood|gandu|harami|bhosdike|laude|lodu|randi|kamine|kamina|saale|bhoosada|bhosda|bhosoda|aulat|gaand)\b/i,
+  /\b(mc|bc|bkl|bsdk|chutiya|chutiye|madarchod|behenchod|bhenchod|matherchod|matherchood|gandu|harami|bhosdike|laude|lodu|randi|kamine|kamina|saale|bhoosada|bhosda|bhosoda|gand mara|gandmara|behen kai laude|behenkelaude|tere maa ki|tere behen ki|tere baap ki |aulat|gaand)\b/i,
 
   // 3. Odia / Odienglish slangs & vulgarities (Latin script / English alphabet)
   /\b(maghia|maghiaa|maagiha|magiha|magiha chhua |banda|banda chhua|bedhabija|bapagiha|bapaghia|khaniki|magia|gandia|gandi|baalia|balia|khandia|randipua|randi\s*pua|bhadua|bhaduwa|chudua|chuduwa|bapara|behesara|jhanta|dhana|dhada|beda|gandimara|bedhachhua|bedha chhua|bedhachhua|haramjada|bandachhua|banda chhua|ghoda gehi pila|godagehi pila|bedha|padara|puduru|bokachoda|bokachuda|chhodi|ka|pua|poa|chodi|choda|bhalu|thiki)\b/i,
