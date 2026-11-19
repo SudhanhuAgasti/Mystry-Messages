@@ -18,7 +18,7 @@ const PROFANITY_PATTERNS: RegExp[] = [
   /\b(mc|bc|bkl|bsdk|chutiya|chutiye|madarchod|behenchod|bhenchod|matherchod|matherchood|gandu|harami|bhosdike|laude|lodu|randi|kamine|kamina|saale|bhoosada|bhosda|bhosoda|aulat|gaand)\b/i,
 
   // 3. Odia / Odienglish slangs & vulgarities (Latin script / English alphabet)
-  /\b(maghia|maghiaa|maagiha|magiha|magiha chhua |banda|banda chhua|bedhabija|bapagiha|bapaghia|khaniki|magia|gandia|gandi|baalia|balia|khandia|randipua|randi\s*pua|bhadua|bhaduwa|chudua|chuduwa|bapara|behesara|jhanta|dhana|dhada|beda|bedha|padara|puduru|bokachoda|bokachuda|chhodi|ka|pua|poa|chodi|choda|bhalu|thiki)\b/i,
+  /\b(maghia|maghiaa|maagiha|magiha|magiha chhua |banda|banda chhua|bedhabija|bapagiha|bapaghia|khaniki|magia|gandia|gandi|baalia|balia|khandia|randipua|randi\s*pua|bhadua|bhaduwa|chudua|chuduwa|bapara|behesara|jhanta|dhana|dhada|beda|gandimara|bedhachhua|bedha chhua|bedhachhua|haramjada|bandachhua|banda chhua|ghoda gehi pila|godagehi pila|bedha|padara|puduru|bokachoda|bokachuda|chhodi|ka|pua|poa|chodi|choda|bhalu|thiki)\b/i,
 
   // 4. Odia script slangs (Unicode / Odia script)
   /(ମାଗିଆ|ଗାଣ୍ଡିଆ|ଗାଣ୍ଡି|ବାଳିଆ|ରାଣ୍ଡିପୁଅ|ଭଦୁଆ|ଛୁଦୁଆ|ଝାଣ୍ଟ|ବେଢା)/u,
